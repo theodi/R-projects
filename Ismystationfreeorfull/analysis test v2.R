@@ -7,9 +7,11 @@ library(lubridate)
 getwd()
 
 # Also file cannot have scientific number formats
-bikes.all <- read.csv("testdata01may13.csv", header=TRUE, sep = ",")
+bikes.all <- read.csv("data_30apr13.csv", header=TRUE, sep = ",")
 
+# Check data set
 head(bikes.all)
+names(bikes.all)
 sapply(bikes.all, class)
 
 # Smaller sample for faster testing
@@ -17,15 +19,15 @@ sapply(bikes.all, class)
 bikes <- bikes.all
 
 # Calculate total bikes per station
-bikes <- mutate(bikes, docks = bikes.available + empty)
-bikes <- mutate(bikes, percent = round(empty / docks*100))
+bikes <- mutate(bikes, docks = BikesAvailable + EmptySlots)
+bikes <- mutate(bikes, percent = round(EmptySlots / docks*100))
 
 table(bikes$docks)
 plot(table(bikes$docks))
 # qplot(docks, data=bikes, binwidth = 1) + theme_tufte()
 
-# Remove stations with less than 5 bikes
-bikes <- bikes[bikes$docks > 5, ]
+# Remove stations with less than 8 bikes
+bikes <- bikes[bikes$docks >= 8, ]
 
 # Create hour variable
 bikes <- mutate (bikes, date=ymd_hms(date))
@@ -36,9 +38,7 @@ table(bikes$hour)
 bikes.station <- bikes[bikes$id==323, ]
 
 # Quick plot including LOESS
-qplot(hour, empty, data=bikes.station, geom="jitter") + theme_bw() + stat_smooth(size = 2)
-qplot(hour, bikes.available, data=bikes.station, geom="jitter") + theme_bw() + stat_smooth(size = 2)
-qplot(hour, percent, data=bikes.station, geom="jitter") + theme_bw() + stat_smooth(size = 2)
+qplot(hour, EmptySlots, data=bikes.station, geom="jitter") + theme_bw() + stat_smooth(size = 2)
 
 # Station name
 station <- bikes.station$location[1]
@@ -85,4 +85,10 @@ p.no <- ggplot(bikes.station, aes(x=hour, y=empty)) +
   theme(axis.ticks = element_blank()) +
   ggtitle(paste("Availability for", station)) 
 plot(p.no) 
+
+
+# For stackoverflow question
+sl <- bikes.station[sample(1:dim(bikes.station)[1], size=100),c(6,14)]
+dput(slots, control=NULL)
+qplot(hour, EmptySlots, data=as.data.frame(sl), geom="jitter") + theme_bw() + stat_smooth(size = 2)
 
