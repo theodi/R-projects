@@ -1,17 +1,15 @@
+# Note to self for shiny examples: http://5.79.23.202:3838/examples/
+
+# Install packages first
 library(plyr)
 library(ggplot2)
 library(ggthemes)
 library(lubridate)
 
+getwd()
 
-setwd("~/Git/CycleHire")
-
-# File needs clean-up because occasional server error
 # Also file cannot have scientific number formats
-bikes.all <- read.csv("data_30apr13.csv", header=FALSE, stringsAsFactors=FALSE, sep = ",")
-varnames <- c("id", "location", "Latitude", "Longitude", "bikes.available", "empty", "installed", "locked", "temp", "time", "date") 
-colnames(bikes.all) <- varnames
-
+bikes.all <- read.csv("testdata01may13.csv", header=TRUE, sep = ",")
 
 head(bikes.all)
 sapply(bikes.all, class)

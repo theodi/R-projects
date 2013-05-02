@@ -1,0 +1,42 @@
+Ubuntu 12.04
+
+# Install Node.js
+sudo apt-get update
+sudo apt-get install software-properties-common python-software-properties python g++ make
+sudo add-apt-repository ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs
+
+# Install R
+sudo add-apt-repository 'deb http://cran.rstudio.com/bin/linux/ubuntu precise/'
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+sudo apt-get update
+sudo apt-get install r-base r-base-dev
+
+# Install Shiny in system-wide library
+sudo su - -c "R -e \"install.packages('shiny', repos='http://cran.rstudio.com/')\""
+
+sudo npm install -g shiny-server
+
+# Install Upstart script
+sudo wget\
+  https://raw.github.com/rstudio/shiny-server/master/config/upstart/shiny-server.conf\
+  -O /etc/init/shiny-server.conf
+
+# Create a system account to run Shiny apps
+sudo useradd -r shiny
+# Create a root directory for your website
+sudo mkdir -p /var/shiny-server/www
+# Create a directory for application logs
+sudo mkdir -p /var/shiny-server/log
+
+# Start Shiny
+sudo start shiny-server
+
+# Optional: Install examples to test
+sudo cp -R /usr/local/lib/R/site-library/shiny/examples /var/shiny-server/www/
+# Now open a browser to http://<hostname>:3838/examples/ and see if they work.
+
+
+# Install more R packages
+sudo su - -c "R -e \"install.packages('ggplot2', repos='http://cran.rstudio.com/')\""
