@@ -1,4 +1,4 @@
-R_projects
+Projects in R
 ==========
 
 Hosts projects dealing with R and stats
