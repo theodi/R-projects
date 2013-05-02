@@ -1,5 +1,3 @@
-# Note to self for shiny examples: http://5.79.23.202:3838/examples/
-
 # Install packages first
 library(plyr)
 library(ggplot2)
@@ -16,7 +14,6 @@ sapply(bikes.all, class)
 
 # Smaller sample for faster testing
 # bikes <- bikes.all[sample(1:dim(bikes.all)[1], size=1000),]
-
 bikes <- bikes.all
 
 # Calculate total bikes per station
