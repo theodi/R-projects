@@ -10,7 +10,7 @@ library(shiny)
 
 shinyUI(bootstrapPage(
 
-  headerPanel("Is my station full?"),
+  headerPanel("Is my station free or full?"),
   
   mainPanel(
 
