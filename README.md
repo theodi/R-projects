@@ -1,6 +1,8 @@
 Projects in R
 ==========
 
-Hosts projects dealing with R and stats
+Some projects are not even work in progress. Look at them at your own risk.
 
-Some projects are very much work in progress. Look at them at your own risk.
+*Playground* is for incomplete code snippets.
+
+`.gitignore` includes all folders called 'data'.
