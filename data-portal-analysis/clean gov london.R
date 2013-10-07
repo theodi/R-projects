@@ -37,6 +37,11 @@ lon.c$diff.weeks <- as.numeric(round(lon.c$time.diff))
 # Time difference analysis
 ggplot(lon.c, aes(x=diff.weeks)) + geom_bar(binwidth=1)
 mode.stat(lon.c$diff.weeks) # 32?
+summary(lon.c$diff.weeks)
+
+# How many data sets were updated (allowing for a month of leeway)?
+nrow(lon.c[lon.c$diff.weeks >= 5, ])
+
 
 
 # -------------------------------
