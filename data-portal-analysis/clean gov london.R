@@ -16,7 +16,7 @@ str(lon.c)
 
 # Recognise dates
 lon.c$date.release <- as.Date(paste("01", lon.c$DDATE), "%d %B %Y")
-lon.c$metadata <- strptime(lon.c$METADATA_UPDATE, "%d/%m/%Y")
+lon.c$metadata <- as.Date(lon.c$METADATA_UPDATE, "%d/%m/%Y")
 row.sample(lon.c, 30)[, "metadata"] # test
   
 # Sort by time
@@ -27,7 +27,16 @@ p.lon.c <- ddply(lon.c, .(date.release), summarize, releases = length(date.relea
 ggplot(data=p.lon.c, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
   theme_minimal(base_family = "Helvetica Neue") +
   ggtitle("London Data Store") + xlab("Release month") + ylab("New data sets")
-ggsave(file="London - releases per month.png", width=8, height=4)
+# ggsave(file="London - releases per month.png", width=8, height=4)
+
+# Sum over time
+p.lon.c <- arrange(p.lon.c, date.release)
+p.lon.c$releases.cumsum <- cumsum(p.lon.c$releases)
+
+ggplot(data=p.lon.c, aes(x=date.release, y=releases.cumsum)) + geom_line() + 
+  theme_minimal(base_family = "Helvetica Neue") +
+  ggtitle("London Data Store") + xlab("Release month") + ylab("Total number of data sets") +
+  geom_text(data=p.lon.c[44, ], label=p.lon.c[44, "releases.cumsum"], hjust=1.5, size=4)
 
 # Calculate time distance between release and metadata update
 # Must allow for min one month diff as DDATE is M-Y only.
