@@ -27,7 +27,7 @@ p.lon.c <- ddply(lon.c, .(date.release), summarize, releases = length(date.relea
 ggplot(data=p.lon.c, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
   theme_minimal(base_family = "Helvetica Neue") +
   ggtitle("London Data Store") + xlab("Release month") + ylab("New data sets")
-# ggsave(file="London - releases per month.png", width=8, height=4)
+ggsave(file="graphics/London - releases per month.png", width=8, height=4)
 
 # Sum over time
 p.lon.c <- arrange(p.lon.c, date.release)
@@ -37,6 +37,7 @@ ggplot(data=p.lon.c, aes(x=date.release, y=releases.cumsum)) + geom_line() +
   theme_minimal(base_family = "Helvetica Neue") +
   ggtitle("London Data Store") + xlab("Release month") + ylab("Total number of data sets") +
   geom_text(data=p.lon.c[44, ], label=p.lon.c[44, "releases.cumsum"], hjust=1.5, size=4)
+ggsave(file="graphics/London - releases cumulative sum.png", width=8, height=4)
 
 # Calculate time distance between release and metadata update
 # Must allow for min one month diff as DDATE is M-Y only.
@@ -45,6 +46,7 @@ lon.c$diff.weeks <- as.numeric(round(lon.c$time.diff))
 
 # Time difference analysis
 ggplot(lon.c, aes(x=diff.weeks)) + geom_bar(binwidth=1)
+ggsave(file="graphics/London - month diff histogram.png")
 mode.stat(lon.c$diff.weeks) # 32?
 summary(lon.c$diff.weeks)
 
