@@ -62,6 +62,8 @@ wb <- wb.full[, c("Name", "Acronym", "Periodicity", "Update.Frequency", "Last.Re
 # Remove empty rows
 # wb <- wb[rowSums(is.na(wb)) != ncol(wb), ]
 str(wb)
+table(is.na(wb.full$Update.Frequency))
+table(is.na(wb.full$Last.Revision.Date))
 
 # Set "current" to current date
 wb$Last.Revision.Date[wb$Last.Revision.Date %in% "Current"] <- "01/11/2013"
@@ -83,11 +85,19 @@ wb$last.revision[which(wb$last.revision < as.POSIXct("1913-01-01"))] <- wb$last.
 wb$Update.Frequency <- as.factor(tolower(wb$Update.Frequency))
 wb$Update.Frequency <- factor(wb$Update.Frequency, levels(wb$Update.Frequency)[rev(c(1, 2, 3, 8, 5, 9, 4, 6, 7))])
 
+# Dates raw
+# Binwidth in seconds, here 4 weeks
+ggplot(data = wb[!is.na(wb$last.revision), ], aes(x = last.revision)) + geom_histogram(fill = "#B42236", color = "white", binwidth = 7*24*60*60*4)
+
+
+ggsave("graphics/last-revision.png", height = 2.5, width = 8, dpi = 100)
+
+
 ggplot(data = wb[!is.na(wb$Update.Frequency), ], aes(x = Update.Frequency)) + 
   geom_histogram(fill = "#B42236") + 
-  stat_bin(geom="text", aes(label=..count.., hjust= 2), color = "white") + 
+  stat_bin(geom="text", aes(label=..count.., hjust= 1), color = "white") + 
   coord_flip() + theme(axis.ticks.y = element_blank())
-ggsave("graphics/update-frequency.png", height = 2.5, width = 8)
+ggsave("graphics/update-frequency.png", height = 2.5, width = 8, dpi = 100)
 
 # Remove datasets with "No further updates planned"
 wb <- wb[wb$Update.Frequency != "No further updates planned", ]
