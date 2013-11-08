@@ -2,6 +2,7 @@ setwd("~/git/R-projects/data-portal-analysis")
 library(ggplot2)
 library(plyr)
 library(lubridate)
+library(scales)
 source("functions.r")
 theme_set(theme_minimal())
 
@@ -87,10 +88,13 @@ wb$Update.Frequency <- factor(wb$Update.Frequency, levels(wb$Update.Frequency)[r
 
 # Dates raw
 # Binwidth in seconds, here 4 weeks
-ggplot(data = wb[!is.na(wb$last.revision), ], aes(x = last.revision)) + geom_histogram(fill = "#B42236", color = "white", binwidth = 7*24*60*60*4)
-
-
+ggplot(data = wb[!is.na(wb$last.revision), ], aes(x = last.revision)) + geom_histogram(fill = "#B42236", color = "white", binwidth = 7*24*60*60*4) + 
+  xlab("Date of the last revision") + scale_x_datetime(breaks = date_breaks("1 year"), labels = date_format("%Y"))
 ggsave("graphics/last-revision.png", height = 2.5, width = 8, dpi = 100)
+
+table(year(wb$last.revision))
+
+
 
 
 ggplot(data = wb[!is.na(wb$Update.Frequency), ], aes(x = Update.Frequency)) + 
