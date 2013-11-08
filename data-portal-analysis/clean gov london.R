@@ -3,6 +3,7 @@ library(ggplot2)
 library(plyr)
 library(lubridate)
 source("functions.r")
+theme_set(theme_minimal())
 
 # -------------------------------
 # London Data Store
@@ -53,7 +54,43 @@ summary(lon.c$diff.weeks)
 # How many data sets were updated (allowing for a month of leeway)?
 nrow(lon.c[lon.c$diff.weeks >= 5, ])
 
+# -------------------------------
+# World Bank
+#--------------------------------
+wb.full <- read.csv("data/world_bank_data_catalog.csv", stringsAsFactors = FALSE, na.strings = "")
+wb <- wb.full[, c("Name", "Acronym", "Periodicity", "Update.Frequency", "Last.Revision.Date")]
+# Remove empty rows
+# wb <- wb[rowSums(is.na(wb)) != ncol(wb), ]
+str(wb)
 
+# Set "current" to current date
+wb$Last.Revision.Date[wb$Last.Revision.Date %in% "Current"] <- "01/11/2013"
+
+# Remove rows with missing dates and frequency because some dates are missingly legitimately
+wb <- wb[!is.na(wb$Update.Frequency) | !is.na(wb$Last.Revision.Date), ]
+
+# As Dates
+wb$last.revision  <- dmy(wb$Last.Revision.Date)
+# A few more with the format "November, 2010"
+wb$last.revision[is.na(wb$last.revision) == TRUE]  <- as.Date(paste("01", wb$Last.Revision.Date[is.na(wb$last.revision)==TRUE]), "%d %B, %Y")
+
+# WHY does it start with 1905? Assume 2005!
+# ACTION: Feed back to Worlp Bank []
+wb <- wb[order(wb$last.revision), ]
+wb$last.revision[which(wb$last.revision < as.POSIXct("1913-01-01"))] <- wb$last.revision[which(wb$last.revision < as.POSIXct("1913-01-01"))] + years(100)
+
+# To lower for merging categories
+wb$Update.Frequency <- as.factor(tolower(wb$Update.Frequency))
+wb$Update.Frequency <- factor(wb$Update.Frequency, levels(wb$Update.Frequency)[rev(c(1, 2, 3, 8, 5, 9, 4, 6, 7))])
+
+ggplot(data = wb[!is.na(wb$Update.Frequency), ], aes(x = Update.Frequency)) + 
+  geom_histogram(fill = "#B42236") + 
+  stat_bin(geom="text", aes(label=..count.., hjust= 2), color = "white") + 
+  coord_flip() + theme(axis.ticks.y = element_blank())
+ggsave("graphics/update-frequency.png", height = 2.5, width = 8)
+
+# Remove datasets with "No further updates planned"
+wb <- wb[wb$Update.Frequency != "No further updates planned", ]
 
 # -------------------------------
 # UK Data Store
