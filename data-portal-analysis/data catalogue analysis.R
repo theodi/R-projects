@@ -3,57 +3,78 @@ library(ggplot2)
 library(plyr)
 library(lubridate)
 library(scales)
+library("directlabels")
 source("functions.r")
-theme_set(theme_minimal())
+theme_set(theme_minimal(base_family = "Helvetica Neue"))
 
 # -------------------------------
 # London Data Store
 #--------------------------------
-lon <- read.csv("data/datastore-catalogue.csv", stringsAsFactors = FALSE)
-lon.c <- lon[, c("TITLE","DDATE", "UPDATE_FREQUENCY", "RELEASE_DATE", "METADATA_UPDATE")]
-str(lon.c)
+lon.full <- read.csv("data/datastore-catalogue.csv", stringsAsFactors = FALSE)
+lon <- lon.full[, c("TITLE","DDATE", "UPDATE_FREQUENCY", "RELEASE_DATE", "METADATA_UPDATE")]
+str(lon)
 
 # Metadata update (from the field names csv file)
-# Last Updated Date of the Dataset or metadata (in the London Datastore)
+# Last Updated Date of the Dataset or metadata (in the London datastore)
 
 # Recognise dates
-lon.c$date.release <- as.Date(paste("01", lon.c$DDATE), "%d %B %Y")
-lon.c$metadata <- as.Date(lon.c$METADATA_UPDATE, "%d/%m/%Y")
-row.sample(lon.c, 30)[, "metadata"] # test
+lon$date.release <- as.Date(paste("01", lon$DDATE), "%d %B %Y")
+lon$metadata <- as.Date(lon$METADATA_UPDATE, "%d/%m/%Y")
+row.sample(lon, 30)[, "metadata"] # test
   
 # Sort by time
-lon.c <- lon.c[order(lon.c$date.release), ]
+lon <- lon[order(lon$date.release), ]
 
 # Create plot of data release per month over the whole period.
-p.lon.c <- ddply(lon.c, .(date.release), summarize, releases = length(date.release))
-ggplot(data=p.lon.c, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
-  theme_minimal(base_family = "Helvetica Neue") +
-  ggtitle("London Data Store") + xlab("Release month") + ylab("New data sets")
-ggsave(file="graphics/London - releases per month.png", width=8, height=4)
+p.lon <- ddply(lon, .(date.release), summarize, releases = length(date.release))
+ggplot(data=p.lon, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
+  ggtitle("London Datastore") + xlab("Release month") + ylab("New data sets")
+ggsave(file="graphics/London - releases per month.png", height = 4, width = 8, dpi = 100)
 
 # Sum over time
-p.lon.c <- arrange(p.lon.c, date.release)
-p.lon.c$releases.cumsum <- cumsum(p.lon.c$releases)
+p.lon <- arrange(p.lon, date.release)
+p.lon$releases.cumsum <- cumsum(p.lon$releases)
+p.lon$date.release <- as.POSIXct(p.lon$date.release)
 
-ggplot(data=p.lon.c, aes(x=date.release, y=releases.cumsum)) + geom_line() + 
-  theme_minimal(base_family = "Helvetica Neue") +
+# Hard coded last row - I am a bad person
+ggplot(data=p.lon, aes(x=date.release, y=releases.cumsum)) + geom_line() + 
   ggtitle("London Data Store") + xlab("Release month") + ylab("Total number of data sets") +
-  geom_text(data=p.lon.c[44, ], label=p.lon.c[44, "releases.cumsum"], hjust=1.5, size=4)
-ggsave(file="graphics/London - releases cumulative sum.png", width=8, height=4)
+  geom_text(data=p.lon[44, ], label=p.lon[44, "releases.cumsum"], hjust=1.5, size=4)
+ggsave(file="graphics/London - releases cumulative sum.png", height = 4, width = 8, dpi = 100)
 
 # Calculate time distance between release and metadata update
 # Must allow for min one month diff as DDATE is M-Y only.
-lon.c$time.diff <-  difftime(lon.c$metadata, lon.c$date.release, units="weeks")
-lon.c$diff.weeks <- as.numeric(round(lon.c$time.diff))
+lon$time.diff <-  difftime(lon$metadata, lon$date.release, units="weeks")
+lon$diff.weeks <- as.numeric(round(lon$time.diff))
 
 # Time difference analysis
-ggplot(lon.c, aes(x=diff.weeks)) + geom_bar(binwidth=1)
-ggsave(file="graphics/London - month diff histogram.png")
-mode.stat(lon.c$diff.weeks) # 32?
-summary(lon.c$diff.weeks)
+ggplot(lon, aes(x=diff.weeks)) + geom_bar(binwidth = 1, fill = "#D60303", color = "white") + 
+  geom_text(data = as.data.frame(c("Mode = 32")), x = 48, y = 58, label = "Mode = 32", size = 4) +
+  xlab("Difference between release and metadata update in weeks")
+ggsave(file="graphics/London - month diff histogram.png", height = 4, width = 8, dpi = 100)
+mode.stat(lon$diff.weeks) # 32?
+summary(lon$diff.weeks)
 
 # How many data sets were updated (allowing for a month of leeway)?
-nrow(lon.c[lon.c$diff.weeks >= 5, ])
+nrow(lon[lon$diff.weeks >= 5, ])
+
+# Create plot of data release per month and metadata update.
+# Year month metadata for comparable granularity in the chart
+lon$meta.month <- as.POSIXct(as.Date(paste(year(lon$metadata), month(lon$metadata), "01"), "%Y %m %d"))
+p.lon2 <- ddply(lon, .(meta.month), summarize, releases = length(metadata))
+ggplot() + 
+  geom_line(data = p.lon, aes(x = date.release, y = releases), color = "#D60303") +
+  geom_line(data = p.lon2, aes(x = meta.month, y = releases), color = "orange") +
+  coord_cartesian(ylim = c(0,100)) +
+  scale_x_datetime(breaks = date_breaks("1 year"), minor_breaks = date_breaks("3 months"), labels = date_format("%b %Y")) +
+  annotate("text", x = as.POSIXct("2010-11-01"), y = 98, label = "^ 151", size = 3.5) +
+  annotate("text", x = as.POSIXct("2013-04-01"), y = 45, label = "New releases", size = 4, color = "red") + 
+  annotate("text", x = as.POSIXct("2013-04-01"), y = 60, label = "Metadata update", size = 4, color = "darkorange") +
+  ggtitle("London Datastore") + xlab("Month") + ylab("Releases per month") 
+ggsave(file="graphics/London-metadata.png", height = 4, width = 8, dpi = 100)
+
+
+
 
 # -------------------------------
 # World Bank
@@ -88,23 +109,32 @@ wb$Update.Frequency <- factor(wb$Update.Frequency, levels(wb$Update.Frequency)[r
 
 # Dates raw
 # Binwidth in seconds, here 4 weeks
-ggplot(data = wb[!is.na(wb$last.revision), ], aes(x = last.revision)) + geom_histogram(fill = "#B42236", color = "white", binwidth = 7*24*60*60*4) + 
+ggplot(data = wb[!is.na(wb$last.revision), ], aes(x = last.revision)) + 
+  geom_histogram(fill = "#B42236", color = "white", binwidth = 7*24*60*60*4) + 
   xlab("Date of the last revision") + scale_x_datetime(breaks = date_breaks("1 year"), labels = date_format("%Y"))
 ggsave("graphics/last-revision.png", height = 2.5, width = 8, dpi = 100)
 
 table(year(wb$last.revision))
 
-
-
-
 ggplot(data = wb[!is.na(wb$Update.Frequency), ], aes(x = Update.Frequency)) + 
-  geom_histogram(fill = "#B42236") + 
-  stat_bin(geom="text", aes(label=..count.., hjust= 1), color = "white") + 
+  geom_histogram(fill = "#B42236") + xlab("Update frequency") +
+  geom_text(aes(label=..count.., y = 0.55), stat = "bin", color = "white", size = 4) + 
   coord_flip() + theme(axis.ticks.y = element_blank())
 ggsave("graphics/update-frequency.png", height = 2.5, width = 8, dpi = 100)
 
 # Remove datasets with "No further updates planned"
-wb <- wb[wb$Update.Frequency != "No further updates planned", ]
+wb.noup <- wb[which(wb$Update.Frequency != "no further updates planned"), ]
+# Remove factor level
+wb.noup$Update.Frequency <- factor(wb.noup$Update.Frequency, exclude = NULL)
+
+# Inspect update frequency for catalogues not updated in 2013
+ggplot(data = wb.noup[which(wb.noup$last.revision < as.POSIXct("2013-01-01")), ], aes(x = Update.Frequency)) + 
+  geom_histogram(fill = "#B42236") + xlab("Update frequency") +
+  geom_text(aes(label=..count.., y = 0.5), stat = "bin", color = "white") + 
+  coord_flip() + theme(axis.ticks.y = element_blank())
+ggsave("graphics/update-frequency-not2013.png", height = 2.5, width = 8, dpi = 100)
+
+summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-01-01"))])
 
 # -------------------------------
 # UK Data Store
