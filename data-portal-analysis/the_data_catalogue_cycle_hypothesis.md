@@ -1,4 +1,4 @@
-# The Data Catalogue Update Cycle Hypothesis: Do Datasets Appear In Waves?
+ # The Data Catalogue Update Cycle Hypothesis: Do Datasets Appear In Waves?
 
 
 Governments and institution publish open data often as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.org/) are discoverable and up-to-date datasets. Below is a lax methodological outline, which we will follow through with three case studies.

@@ -49,7 +49,8 @@ lon$diff.weeks <- as.numeric(round(lon$time.diff))
 
 # Time difference analysis
 ggplot(lon, aes(x=diff.weeks)) + geom_bar(binwidth = 1, fill = "#D60303", color = "white") + 
-  geom_text(data = as.data.frame(c("Mode = 32")), x = 48, y = 58, label = "Mode = 32", size = 4) +
+  geom_text(data = as.data.frame(c("Mode = 32")), x = 48, y = 58, label = "Mode = 32", size = 3.5) +
+  geom_hline(yintercept = seq(10, 60, 10), col = "white", lwd = 0.5) +
   xlab("Difference between release and metadata update in weeks")
 ggsave(file="graphics/London - month diff histogram.png", height = 4, width = 8, dpi = 100)
 mode.stat(lon$diff.weeks) # 32?
@@ -111,7 +112,9 @@ wb$Update.Frequency <- factor(wb$Update.Frequency, levels(wb$Update.Frequency)[r
 # Binwidth in seconds, here 4 weeks
 ggplot(data = wb[!is.na(wb$last.revision), ], aes(x = last.revision)) + 
   geom_histogram(fill = "#B42236", color = "white", binwidth = 7*24*60*60*4) + 
-  xlab("Date of the last revision") + scale_x_datetime(breaks = date_breaks("1 year"), labels = date_format("%Y"))
+  geom_hline(yintercept = seq(5, 20, 5), col = "white", lwd = 0.7) +
+ scale_x_datetime(breaks = date_breaks("1 year"), labels = date_format("%Y")) +
+  xlab("Date of last revision")
 ggsave("graphics/last-revision.png", height = 2.5, width = 8, dpi = 100)
 
 table(year(wb$last.revision))
