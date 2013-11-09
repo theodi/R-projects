@@ -67,8 +67,12 @@ The World Bank updates its data catalogues with an irregular schedule. However, 
 
 At the time of analysis the [London datastore](http://data.london.gov.uk) hosts 537 datasets. 
 
-![releases](https://github.com/theodi/R-projects/blob/master/data-portal-analysis/graphics/London%20-%20releases%20per%20month.png)
+#### Figure 2.1
+![releases](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-releases-per-month.png)
 
+#### Figure 2.2
+![metadata](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-metadata.png)
 
-
+#### Figure 2.3
+![difference](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London%20-%20month%20diff%20histogram.png)
 

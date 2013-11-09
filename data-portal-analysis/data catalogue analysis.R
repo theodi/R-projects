@@ -34,7 +34,7 @@ p.lon$releases.cumsum <- cumsum(p.lon$releases)
 p.lon$date.release <- as.POSIXct(p.lon$date.release)
 
 ggplot(data=p.lon, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
-  ggtitle("London Datastore") + xlab("Month of release") + ylab("New datasets")
+  xlab("Month of release") + ylab("New datasets")
 ggsave(file="graphics/London-releases-per-month.png", height = 4, width = 8, dpi = 100)
 
 
@@ -54,7 +54,7 @@ ggplot(lon, aes(x=diff.weeks)) + geom_bar(binwidth = 1, fill = "#D60303", color 
   geom_text(data = as.data.frame(c("Mode = 32")), x = 48, y = 58, label = "Mode = 32", size = 3.5) +
   geom_hline(yintercept = seq(10, 60, 10), col = "white", lwd = 0.5) +
   xlab("Difference between release and metadata update in weeks")
-ggsave(file="graphics/London - month diff histogram.png", height = 4, width = 8, dpi = 100)
+ggsave(file="graphics/London-month-diff-histogram.png", height = 4, width = 8, dpi = 100)
 mode.stat(lon$diff.weeks) # 32?
 summary(lon$diff.weeks)
 
