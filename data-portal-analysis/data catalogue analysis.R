@@ -27,14 +27,16 @@ lon <- lon[order(lon$date.release), ]
 
 # Create plot of data release per month over the whole period.
 p.lon <- ddply(lon, .(date.release), summarize, releases = length(date.release))
-ggplot(data=p.lon, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
-  ggtitle("London Datastore") + xlab("Release month") + ylab("New data sets")
-ggsave(file="graphics/London - releases per month.png", height = 4, width = 8, dpi = 100)
 
-# Sum over time
+# Sum over time 
 p.lon <- arrange(p.lon, date.release)
 p.lon$releases.cumsum <- cumsum(p.lon$releases)
 p.lon$date.release <- as.POSIXct(p.lon$date.release)
+
+ggplot(data=p.lon, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
+  ggtitle("London Datastore") + xlab("Month of release") + ylab("New datasets")
+ggsave(file="graphics/London-releases-per-month.png", height = 4, width = 8, dpi = 100)
+
 
 # Hard coded last row - I am a bad person
 ggplot(data=p.lon, aes(x=date.release, y=releases.cumsum)) + geom_line() + 
@@ -134,7 +136,7 @@ wb.noup$Update.Frequency <- factor(wb.noup$Update.Frequency, exclude = NULL)
 ggplot(data = wb.noup[which(wb.noup$last.revision < as.POSIXct("2013-01-01")), ], aes(x = Update.Frequency)) + 
   geom_histogram(fill = "#B42236") + xlab("Update frequency") +
   geom_text(aes(label=..count.., y = 0.5), stat = "bin", color = "white", size = 4) + 
-  coord_flip() + theme(axis.ticks.y = element_blank())
+  coord_flip() + theme(axis.ticks.y = element_blank()) + ylim(0, 30)
 ggsave("graphics/update-frequency-not2013.png", height = 1.7, width = 8, dpi = 100)
 
 summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-01-01"))])

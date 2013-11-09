@@ -61,9 +61,14 @@ This looks promising: it's possible that for around half of them there was no re
 The World Bank updates its data catalogues with an irregular schedule. However, of the 102 data catalogues that have revision dates and are planned to be updated, only 39 were not revised in 2013. We estimate that for these 39 data catalogues around half do not have an updated release. (The number of missing dates is relatively large, which is a substantial caveat.)
 
 <!--This is a positive framing – we could also say "hasn't updated around 20%"-->
-This means that the World Bank updates around 80% of its data catalogues. In this case study we therefore *cannot* reject hypothesis 1b: despite the uneven release cycle we may support the hypothesis that data catalogues are continuously updated.
+**This means that the World Bank updates around 80% of its data catalogues. In this case study we therefore *cannot* reject hypothesis 1b: despite the uneven release cycle we may support the hypothesis that data catalogues are continuously updated.**
 
 ## 2. The London Datastore
 
-The [London datastore](arsnteioa) currently hosts 537 datasets. 
+At the time of analysis the [London datastore](http://data.london.gov.uk) hosts 537 datasets. 
+
+![releases](https://github.com/theodi/R-projects/blob/master/data-portal-analysis/graphics/London%20-%20releases%20per%20month.png)
+
+
+
 
