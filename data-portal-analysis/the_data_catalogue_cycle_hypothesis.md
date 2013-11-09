@@ -74,5 +74,5 @@ At the time of analysis the [London datastore](http://data.london.gov.uk) hosts 
 ![metadata](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-metadata.png)
 
 #### Figure 2.3
-![difference](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London%20-%20month%20diff%20histogram.png)
+![difference](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-month-diff-histogram.png)
 
