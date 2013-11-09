@@ -133,9 +133,9 @@ wb.noup$Update.Frequency <- factor(wb.noup$Update.Frequency, exclude = NULL)
 # Inspect update frequency for catalogues not updated in 2013
 ggplot(data = wb.noup[which(wb.noup$last.revision < as.POSIXct("2013-01-01")), ], aes(x = Update.Frequency)) + 
   geom_histogram(fill = "#B42236") + xlab("Update frequency") +
-  geom_text(aes(label=..count.., y = 0.5), stat = "bin", color = "white") + 
+  geom_text(aes(label=..count.., y = 0.5), stat = "bin", color = "white", size = 4) + 
   coord_flip() + theme(axis.ticks.y = element_blank())
-ggsave("graphics/update-frequency-not2013.png", height = 2.5, width = 8, dpi = 100)
+ggsave("graphics/update-frequency-not2013.png", height = 1.6, width = 8, dpi = 100)
 
 summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-01-01"))])
 
