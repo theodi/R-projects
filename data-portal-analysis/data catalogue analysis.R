@@ -40,9 +40,9 @@ ggsave(file="graphics/London-releases-per-month.png", height = 4, width = 8, dpi
 
 # Hard coded last row - I am a bad person
 ggplot(data=p.lon, aes(x=date.release, y=releases.cumsum)) + geom_line() + 
-  ggtitle("London Data Store") + xlab("Release month") + ylab("Total number of data sets") +
+  xlab("Release month") + ylab("Total number of data sets") +
   geom_text(data=p.lon[44, ], label=p.lon[44, "releases.cumsum"], hjust=1.5, size=4)
-ggsave(file="graphics/London - releases cumulative sum.png", height = 4, width = 8, dpi = 100)
+ggsave(file="graphics/London-releases-cumulative-sum.png", height = 4, width = 8, dpi = 100)
 
 # Calculate time distance between release and metadata update
 # Must allow for min one month diff as DDATE is M-Y only.
@@ -51,7 +51,7 @@ lon$diff.weeks <- as.numeric(round(lon$time.diff))
 
 # Time difference analysis
 ggplot(lon, aes(x=diff.weeks)) + geom_bar(binwidth = 1, fill = "#D60303", color = "white") + 
-  geom_text(data = as.data.frame(c("Mode = 32")), x = 48, y = 58, label = "Mode = 32", size = 3.5) +
+  geom_text(data = as.data.frame(c("32")), x = 50, y = 58, label = "Mode = 32 weeks", size = 3.5) +
   geom_hline(yintercept = seq(10, 60, 10), col = "white", lwd = 0.5) +
   xlab("Difference between release and metadata update in weeks")
 ggsave(file="graphics/London-month-diff-histogram.png", height = 4, width = 8, dpi = 100)
@@ -73,7 +73,7 @@ ggplot() +
   annotate("text", x = as.POSIXct("2010-11-01"), y = 98, label = "^ 151", size = 3.5) +
   annotate("text", x = as.POSIXct("2013-04-01"), y = 45, label = "New releases", size = 4, color = "red") + 
   annotate("text", x = as.POSIXct("2013-04-01"), y = 60, label = "Metadata update", size = 4, color = "darkorange") +
-  ggtitle("London Datastore") + xlab("Month") + ylab("Releases per month") 
+  xlab("Month") + ylab("Releases per month") 
 ggsave(file="graphics/London-metadata.png", height = 4, width = 8, dpi = 100)
 
 
