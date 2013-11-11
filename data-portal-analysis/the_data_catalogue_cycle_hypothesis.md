@@ -67,19 +67,19 @@ The World Bank updates its data catalogues with an irregular schedule. However, 
 
 At the time of analysis the [London datastore](http://data.london.gov.uk) hosts 537 datasets. They were published with the following pattern since January 2010. 
 
-#### Figure 2.1
+#### Figure 2.1 The London datastore dataset releases
 ![releases](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-releases-per-month.png)
 
-The big spikes at the beginning are months were the London datastore released many similar datasets. For example, in August 2010 the Department for Education released a series of datasets. Or in October 2013 the London Fire and Emergency Planning Authority (LFEPA) released added around a dozen datasets to the datastore. 
+The big spikes at the beginning are months were the London datastore released many similar datasets. For example, in August 2010 the Department for Education released a series of datasets. Or in October 2013 the London Fire and Emergency Planning Authority (LFEPA) added around a dozen datasets to the datastore. 
 
 The more relevant variable is however the **metadata** update cycle. (The metadata is the "Last Updated Date of the Dataset or metadata (in the London Datastore).") As we can see below, for the London datastore the month of September 2010 is a large outlier. We don't have a better explanation than a general update of the early releases, but comments are welcome. Otherwise the metadata updates slightly trail the release figures. They are **not**, as you might expect for an up-to-date datastore, particularly concentrated in recent months.
 
-#### Figure 2.2
+#### Figure 2.2 The London datastore dataset releases and updates
 ![metadata](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-metadata.png)
 
 The vast majority is updated annually or more often. So what is the average time distance between a release and a metadata update? As you can see below, the most common value is 32 weeks, which is a bit more than 7 months. Unfortunately, this is driven by the big spike in September 2010. Many datasets are also updated within a few weeks, which does not support an up-to-date data catalogue.
 
-#### Figure 2.3
+#### Figure 2.3 The London datastore update frequency
 ![difference](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-month-diff-histogram.png)
 
 ### Conclusion
