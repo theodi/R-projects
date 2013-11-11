@@ -1,6 +1,6 @@
 # The Data Catalogue Update Cycle Hypothesis: Do Datasets Appear In Waves?
 
-Governments and institution often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.org/) are discoverable and up-to-date datasets. Below is a lax methodological outline, which we will follow through with three case studies.
+Governments and institutions often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.org/) are discoverable and up-to-date datasets. Below is a lax methodological outline, which we will follow through with three case studies.
 
 
 | H | Research null hypothesis |
@@ -85,4 +85,6 @@ The vast majority is updated annually or more often. So what is the average time
 ### Conclusion
 
 **The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the metadata updates are not concentrated in recent months and often happen soon after the original release. This is not a pattern we would expect in an up-to-date data catalogue.**
+
+## 3. The UK Datastore ([data.gov.uk](http://data.gov.uk))
 
