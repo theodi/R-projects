@@ -144,5 +144,44 @@ summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-
 # -------------------------------
 # UK Data Store
 #--------------------------------
-gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-09-30.csv")
+# Fuck row 16475
+# Deleted resource and noter.rendered column, only caused problems
+library(data.table)
+library(colbycol)
+gov.full <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11.csv", stringsAsFactors = FALSE, na.strings = "")
+#gov.full <- fread("data/data.gov.uk-ckan-meta-data-2013-11-11.csv", stringsAsFactors = FALSE, na.strings = "", nrows = 1)
+
+# gov <- gov.full[, c("title", "metadata_modified", "update_frequency", "date_released", "date_updated", "metadata.date", "frequency.of.update")]
+gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11-short.csv", stringsAsFactors = FALSE, na.strings = "")
+str(gov)
+sapply(gov, function(x) table(is.na(x)))
+
+# Not working
+for (i in list("date_released", "date_updated", "metadata.date", "frequency.of.update")) {
+  var <- paste0("gov$", i)
+  print(head(var[is.na(var) == FALSE], n = 30))
+}
+
+# Find out date formats
+head(gov$date_released[is.na(gov$date_released) == FALSE], n = 30)
+head(gov$date_updated[is.na(gov$date_updated) == FALSE], n = 30)
+head(gov$metadata.date[is.na(gov$metadata.date) == FALSE], n = 30)
+head(gov$frequency.of.update[is.na(gov$frequency.of.update) == FALSE], n = 30)
+
+# Parse times
+gov$metadata_modified <- ymd_hms(gov$metadata_modified)
+
+for (i in c("date_released", "date_updated", "metadata.date", "frequency.of.update")) {
+  var <- paste0("gov$", i)
+  var <- dmy(var)
+}
+
+gov[, c("date_released", "date_updated", "metadata.date", "frequency.of.update")]
+
+
+gov$metadata.date <- dmy(gov$metadata.date)
+
+head(gov$metadata.date[which(nchar(gov$metadata.date) != 8 )])
+
+
 
