@@ -148,40 +148,38 @@ summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-
 # Deleted resource and noter.rendered column, only caused problems
 library(data.table)
 library(colbycol)
-gov.full <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11.csv", stringsAsFactors = FALSE, na.strings = "")
+#gov.full <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11.csv", stringsAsFactors = FALSE, na.strings = "")
 #gov.full <- fread("data/data.gov.uk-ckan-meta-data-2013-11-11.csv", stringsAsFactors = FALSE, na.strings = "", nrows = 1)
 
 # gov <- gov.full[, c("title", "metadata_modified", "update_frequency", "date_released", "date_updated", "metadata.date", "frequency.of.update")]
-gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11-short.csv", stringsAsFactors = FALSE, na.strings = "")
+gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11-short-refined.csv", stringsAsFactors = FALSE, na.strings = "")
 str(gov)
-sapply(gov, function(x) table(is.na(x)))
 
 # Not working
-for (i in list("date_released", "date_updated", "metadata.date", "frequency.of.update")) {
-  var <- paste0("gov$", i)
-  print(head(var[is.na(var) == FALSE], n = 30))
-}
-
-# Find out date formats
-head(gov$date_released[is.na(gov$date_released) == FALSE], n = 30)
-head(gov$date_updated[is.na(gov$date_updated) == FALSE], n = 30)
-head(gov$metadata.date[is.na(gov$metadata.date) == FALSE], n = 30)
-head(gov$frequency.of.update[is.na(gov$frequency.of.update) == FALSE], n = 30)
+# for (i in list("date_released", "date_updated", "metadata.date", "frequency.of.update")) {
+#   var <- paste0("gov$", i)
+#   print(head(var[is.na(var) == FALSE], n = 30))
+# }
 
 # Parse times
+dates <- c("last_major_modification", "metadata_created", "metadata_modified")
+gov$last_major_modification <- ymd_hms(gov$last_major_modification)
+gov$metadata_created <- ymd_hms(gov$metadata_created)
 gov$metadata_modified <- ymd_hms(gov$metadata_modified)
 
-for (i in c("date_released", "date_updated", "metadata.date", "frequency.of.update")) {
-  var <- paste0("gov$", i)
-  var <- dmy(var)
-}
+# Missing
+sapply(gov, function(x) table(is.na(x)))
+summary(gov[dates])
 
-gov[, c("date_released", "date_updated", "metadata.date", "frequency.of.update")]
+# What is spelled consistently? (Hint: nothing. -- Fine, some things.)
+head(sort(table(gov$update_frequency), decreasing = TRUE), n = 30)
+head(sort(table(gov$license), decreasing = TRUE), n = 10)
 
+# Remove unpublished
+gov.clean <- gov[gov[, "license"] != "unpublished", ]
 
-gov$metadata.date <- dmy(gov$metadata.date)
-
-head(gov$metadata.date[which(nchar(gov$metadata.date) != 8 )])
-
+ggplot(data = gov.clean, aes(x = last_major_modification)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
+ggplot(data = gov.clean, aes(x = metadata_created)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
+ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "white", binwidth = 24*60*60)
 
 
