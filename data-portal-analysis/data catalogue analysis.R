@@ -76,7 +76,17 @@ ggplot() +
   xlab("Month") + ylab("Releases per month") 
 ggsave(file="graphics/London-metadata.png", height = 4, width = 8, dpi = 100)
 
+#-------TAGS--------
+head(sort(table(lon.full$CATEGORIES)), decreasing = TRUE)
+head(sort(table(lon.full$TAGS)), decreasing = TRUE)
 
+library(tau)
+tags.c <-  textcnt(lon.full$CATEGORIES, split = "[[:space:][:punct:]]+", method = "string", n = 1L)
+tags.t <-  textcnt(lon.full$TAGS, split = "[[:space:][:punct:]]+", method = "string", n = 1L)
+sort(tags.c, decreasing = TRUE)
+head(sort(tags.t, decreasing = TRUE), n = 20)
+
+write.csv(tags.c[-1], "data/london-categories.csv")
 
 
 # -------------------------------
@@ -144,22 +154,18 @@ summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-
 # -------------------------------
 # UK Data Store
 #--------------------------------
-# Fuck row 16475
-# Deleted resource and noter.rendered column, only caused problems
-library(data.table)
-library(colbycol)
+# Fuck this data dump, so many rogue rows. 
+# Deleted lots of columns, only caused problems
+# Piped through google refine for update frequency
+# --------
+# library(data.table)
+# library(colbycol)
 #gov.full <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11.csv", stringsAsFactors = FALSE, na.strings = "")
 #gov.full <- fread("data/data.gov.uk-ckan-meta-data-2013-11-11.csv", stringsAsFactors = FALSE, na.strings = "", nrows = 1)
 
 # gov <- gov.full[, c("title", "metadata_modified", "update_frequency", "date_released", "date_updated", "metadata.date", "frequency.of.update")]
 gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11-short-refined.csv", stringsAsFactors = FALSE, na.strings = "")
 str(gov)
-
-# Not working
-# for (i in list("date_released", "date_updated", "metadata.date", "frequency.of.update")) {
-#   var <- paste0("gov$", i)
-#   print(head(var[is.na(var) == FALSE], n = 30))
-# }
 
 # Parse times
 dates <- c("last_major_modification", "metadata_created", "metadata_modified")
@@ -181,5 +187,10 @@ gov.clean <- gov[gov[, "license"] != "unpublished", ]
 ggplot(data = gov.clean, aes(x = last_major_modification)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
 ggplot(data = gov.clean, aes(x = metadata_created)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
 ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "white", binwidth = 24*60*60)
+
+# -------------------------------
+# Socrata
+#--------------------------------
+gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11-short-refined.csv", stringsAsFactors = FALSE, na.strings = "")
 
 
