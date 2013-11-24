@@ -1,45 +1,97 @@
-# The Data Catalogue Update Cycle Hypothesis: Do Datasets Appear In Waves?
+# The Data Catalogue Update Hypothesis: Are Datasets Up-to-date?
 
-Governments and institutions often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.org/) are discoverable and up-to-date datasets. Below is a lax methodological outline, which we will follow through with three case studies.
+Governments and institutions often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.o[rg/) are discoverable and up-to-date datasets. We looked at three case studies and found further evidence from an [analysis of Socrata's](http://thomaslevine.com/!/data-updatedness) data catalogues. 
+
+This matters for several reasons, for example:
+
+* Businesses and startups using open data want to trust the publisher that the data remains available and up-to-date. Obsolete data will stifle **innovation**.
+* A measure of timeliness will put the spotlight on the update cycle. Automating this process can lead to gains in **efficiency**.
+* Current data is more useful. We can pre-empt counter-arguments such as "this is not relevant data anymore". It will ultimately support the **sustainability** of the open data ecosystem.
+
+## Findings
+
+Here are some of the general findings:
+
+1. **Missing timeliness**. More evidence points towards the hypothesis that many datasets are *not updated* with a regular schedule or at all. 
+
+2. **Poor metadata**. The data about open data seems to be incomplete, undocumented or hard to find. (Ironic, you may say.) On the plus side, there is enough metadata available to make this statement.
+
+3. What goes on *within* datasets is another question...
+
+And in particular: 
+
+1. World Bank
+2. London Datastore
+3. UK Datastore 
 
 
-| H | Research null hypothesis |
-| :-- | :----- |
-| 1a | *Data catalogues publish datasets evenly over time.* |
-| 1b | *Datasets in data catalogues are continuously updated.* | 
+
+## On the timeliness of data
+
+What is an up-to-date dataset? This isn't a trivial question and is a function of the update frequency. A dataset that is only released annually probably doesn't need be updated more than once a year. 
+
+Arguable the biggest area of "dark matter" comes from **deleted datasets**. To update, a publisher uploads a new dataset and deletes the previous one. Where or how is this reflected in the metadata? [TK: ask London and UK store]
+
+Lastly, a dataset should always contain timely data. Some datasets such as the UK census or, [below](addendum), carbon emissions, may be technically up-to-date, but are too far behind reality in their schedule. Here we will not discuss the questions of what is timely data and focus on the update cycle of datastores.
+
+### The `tau` of data
+
+I propose the following metric:
+
+```
+tau =   sum over N I[ update frequency / (today – last substantial update) ]
+```
+
+This is the average of the indicator whether the dataset's last update was further ago than its update frequency. `I()` is the [indicator function](indicator) and takes 1 if the ratio is bigger than 1 and zero otherwise. `N` is the number of datasets in the catalogue. 
+
+By substantial we mean a new release of the data. Minor updates, for example if someone discovers a typo in the title and corrects it, should not appear as an update.
+
+A `tau` of 0 means the catalogue has no up-to-date datasets. A `tau` of 1 means all datasets are up-to-date. 
+
+| `tau` | timeliness of data |
+| :-- | -----: |
+| 0.91 - 1 | Exemplar |
+| 0.71 - 0.9 | Standard | 
+| 0.51 - 0.7 | OK | 
+| 0.31 - 0.5 | Poor | 
+| 0      - 0.3 | Obsolete | 
+
+To implement the `tau`, you need to record the last substantial update and a standardised update frequency for all datasets (preferably in days; labels such as "biannually", "Bi-annually" and "every 6 months" are not helpful.)
 
 
-<!--Research null hypothesis 1a:
-*Data catalogues publish datasets evenly over time.*
+## Methodology
 
-Research null hypothesis 1b:
-*Datasets in data catalogues are continuously updated.*-->
+The meandering landscape of open data portals prohibits a simple quantitative analysis. (Despite the limited number of data portal software such as CKAN.) [Some](http://thomaslevine.com/!/data-updatedness) have tried by looking at the Socrata metadata, though face numerous caveats.
 
-Notice how rejecting hypothesis 1a is unrelated to hypothesis 1b. We have little information on how often datasets have to be updated. An uneven release cycle could mean that datasets have different update schedules. In fact, this is quite probable. Thus, how can we distinguish between:
+We chose a more qualitative approach by looking at three case studies: the World Bank, the UK datastore and the London datastore. The three cases were selected because we have existing relationships with the publishers and they represent different regional levels (international, national and local, respectively).
 
-1. a pattern due to datasets that differ substantially in their update cycle; and
-2. "waves" of updating datasets unrelated to the availability at the source?
+An additional difficulty is that an uneven release cycle can stem from 
 
-The answer will only be qualitative and suggestive. Let's start by having a look at the meta-information released by the [World Bank](http://data.worldbank.org). 
+1. datasets that differ substantially in their update cycle; and
+2. "waves" of updating datasets unrelated to the availability at the source.
+
+Without additional information we cannot distinguish between the two explanations.  Even if we know how often datasets have to be updated, without a proper metric the answer will only be qualitative and suggestive.
+
+
 
 ## 1. The World Bank Data Catalogue
 
-The original [meta-data](http://datacatalog.worldbank.org/) contains 162 catalogues. For the columns "update frequency" and "last revision date" information for around 15% are missing. If not stated otherwise they are removed. 
+The original [metadata](http://datacatalog.worldbank.org/) contains 162 catalogues. For the columns `update frequency` and `last revision date` information for around 15% are missing. Missing data are treated as missing at random and are removed. 
 
-The catalogues were last update as follows:
+The catalogues were last updated (`last revision date`) as follows:
 
 2005 | 2006| 2007 | 2008 | 2009 | 2010 | 2011 | 2012 | 2013
  --: | --: |  --: | --:  |  --: | --:  | --:  | --:  | --:
    6 | 0   | 0    |  1   |    6 |  12  |  18  |  18  |  75 
    
-We can see that the World Bank updated more than half of its data catalogues this year.
+We can see that the World Bank updated more than half of its data catalogues in 2013.
 
 #### Figure 1.1: World Bank data catalogue last revision date 
 ![last revision](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/last-revision.png)
 
 (The 2005 figures are an artefact because in the original data they are dated as 1905.)
 
-It's also clear that we can reject hypothesis 1a. The update cycle has clear spikes in certain months and is not uniform over the years.
+It is also clear that the update cycle has clear spikes in certain months and is not uniform over the years.
 
 ### Taking the update frequency into account
 
@@ -62,6 +114,17 @@ The World Bank updates its data catalogues with an irregular schedule. However, 
 
 <!--This is a positive framing – we could also say "hasn't updated around 20%"-->
 **This means that the World Bank updates around 80% of its data catalogues. In this case study we therefore *cannot* reject hypothesis 1b: despite the uneven release cycle we may support the hypothesis that data catalogues are continuously updated.**
+
+### Addendum
+
+While the update cycle of the World Bank's data catalogues seems reasonable, there are serious gaps in important indicators. For example, a key metric to mitigate climate change is carbon emissions. The most recent numbers are only from 2010! While this is certainly not the Bank's fault, an updated dataset should also contain timely data.
+
+<div style="width:600px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; line-height:20px"><div style="background-color:#333; padding:0px 5px; font-weight:bold"><div style="color:#fff; font-size:12px; line-height:20px;"><a href="http://data.worldbank.org/indicator/EN.ATM.CO2E.KT/countries?display=graph" style="color:#fff;text-decoration:none;" class="active">CO2 emissions (kt)</a></div></div><script type="text/javascript">widgetContext = { "url": "http://data.worldbank.org/widgets/indicator/0/web_widgets_3/EN.ATM.CO2E.KT/countries/1W", "width": 600, "height": 200, "widgetid": "web_widget_iframe_ea74e1142afed7b93751806f0dacae63" };</script><div id="web_widget_iframe_ea74e1142afed7b93751806f0dacae63"></div><script src="http://data.worldbank.org/profiles/datafinder/modules/contrib/web_widgets/iframe/web_widgets_iframe.js"></script><div style="font-size: 10px; color:#000">Data from <a href="http://data.worldbank.org/indicator/EN.ATM.CO2E.KT/countries?display=graph" style="color:#CCC;">World Bank</a></div></div>
+
+Hans Rosling, in an [interview](http://blog.okfn.org/2013/01/21/carbon-dioxide-data-is-not-on-the-worlds-dashboard-says-hans-rosling/), puts it in colourful words: 
+
+> I was with the Minister of Environment and she was going to Durban. And I said: "But you are going to Durban with eleven and a half month constipation. What if all of this shit comes out on stage? That would be embarrassing wouldn’t it?”
+
 
 ## 2. The London Datastore
 
