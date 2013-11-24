@@ -13,3 +13,5 @@ capwords <- function(s, strict = FALSE) {
                            sep = "", collapse = " " )
   sapply(strsplit(s, split = " "), cap, USE.NAMES = !is.null(names(s)))
 }
+
+nmissing <- function(x) sum(is.na(x))

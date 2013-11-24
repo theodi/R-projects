@@ -3,6 +3,7 @@ library(ggplot2)
 library(plyr)
 library(lubridate)
 library(scales)
+library(car)
 library("directlabels")
 source("functions.r")
 theme_set(theme_minimal(base_family = "Helvetica Neue"))
@@ -105,6 +106,7 @@ wb$Last.Revision.Date[wb$Last.Revision.Date %in% "Current"] <- "01/11/2013"
 
 # Remove rows with missing dates and frequency because some dates are missingly legitimately
 wb <- wb[!is.na(wb$Update.Frequency) | !is.na(wb$Last.Revision.Date), ]
+ddply(wb, .(Update.Frequency), colwise(nmissing))
 
 # As Dates
 wb$last.revision  <- dmy(wb$Last.Revision.Date)
@@ -137,7 +139,7 @@ ggplot(data = wb[!is.na(wb$Update.Frequency), ], aes(x = Update.Frequency)) +
   coord_flip() + theme(axis.ticks.y = element_blank())
 ggsave("graphics/update-frequency.png", height = 2.5, width = 8, dpi = 100)
 
-# Remove datasets with "No further updates planned"
+# Remove datasets with "No further updates planned" and missings
 wb.noup <- wb[which(wb$Update.Frequency != "no further updates planned"), ]
 # Remove factor level
 wb.noup$Update.Frequency <- factor(wb.noup$Update.Frequency, exclude = NULL)
@@ -150,6 +152,33 @@ ggplot(data = wb.noup[which(wb.noup$last.revision < as.POSIXct("2013-01-01")), ]
 ggsave("graphics/update-frequency-not2013.png", height = 1.7, width = 8, dpi = 100)
 
 summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-01-01"))])
+
+#--------------
+# Calculate the Bank's tau
+# First we need to recode the frequency variable with some assumptions
+            
+# Being generous here
+wb.noup$freq.days <- recode(wb.noup$Update.Frequency, as.factor.result = FALSE, 
+                          " 'no fixed schedule' = 730;
+                            'daily' = 1;
+                            'weekly' = 7;
+                            'monthly' = 31; 
+                            'quarterly' = 92;
+                            'biannually' = 183;
+                            'annually' = 365;
+                            'annual +' = 1000; ")
+
+# Calculate tau
+# Allow for a number of days to refresh
+leeway <- 40
+wb.noup$today <- as.POSIXct("2013-11-05")
+wb.noup$days.diff <- as.numeric(wb.noup$today - wb.noup$last.revision)
+wb.noup$ratio <- (wb.noup$freq.days + leeway) / wb.noup$days.diff
+wb.noup$indicator <- 0 
+wb.noup$indicator[which(wb.noup$ratio >= 1)] <- 1
+
+round(mean(wb.noup$indicator), 2)
+ddply(wb.noup, .(Update.Frequency), summarise, tau = round(mean(indicator), 2), count = length(indicator))
 
 # -------------------------------
 # UK Data Store

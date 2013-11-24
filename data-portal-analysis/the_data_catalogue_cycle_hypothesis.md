@@ -100,13 +100,30 @@ Not all datasets have to be updated within the last year. Below we can see that 
 #### Figure 1.2: World Bank data catalogue update frequency
 ![update frequency](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/update-frequency.png)
 
+What happens if we only look at the catalogues that were not updated in 2013?
 First, let's remove the 23 catalogues that are not planned to be updated.
 Secondly, let's inspect the update frequency for those catalogues that have not been updated in 2013. (We could get more granular here, by quarter or month, but simple will do.)
 
-#### Figure 1.3: World Bank data catalogue update frequency excluding 2013
-![update frequency not 2013](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/update-frequency-not2013.png)
+
 
 This looks promising: it's possible that for around half of them there was no reason to update the catalogue in 2013. 
+
+**Overall `tau` = 0.54**
+
+This breaks down as follows.
+
+Update frequency | `tau` | count 
+ :-- | --: | --: 
+ no fixed schedule | 0.59  |  27 
+             daily| 1.00  |   5
+            weekly| 1.00  |   1
+           monthly| 0.14  |   7
+         quarterly| 0.92  |  25
+        biannually| 0.33  |   9
+          annually| 0.33  |  30
+          annual +| 0.33  |  15       
+
+To account for I added a arbitrary number of 40 days. "no fixed schedule" is assumed to be two years, whereas "annual +" a thousand days.
 
 ### Conclusion
 
