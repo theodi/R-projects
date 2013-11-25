@@ -36,7 +36,7 @@ p.lon$date.release <- as.POSIXct(p.lon$date.release)
 
 ggplot(data=p.lon, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
   xlab("Month of release") + ylab("New datasets")
-ggsave(file="graphics/London-releases-per-month.png", height = 4, width = 8, dpi = 100)
+ggsave(file="graphics/London-releases-per-month.png", height = 2, width = 8, dpi = 100)
 
 
 # Hard coded last row - I am a bad person
@@ -71,11 +71,11 @@ ggplot() +
   geom_line(data = p.lon2, aes(x = meta.month, y = releases), color = "orange") +
   coord_cartesian(ylim = c(0,100)) +
   scale_x_datetime(breaks = date_breaks("1 year"), minor_breaks = date_breaks("3 months"), labels = date_format("%b %Y")) +
-  annotate("text", x = as.POSIXct("2010-11-01"), y = 98, label = "^ 151", size = 3.5) +
-  annotate("text", x = as.POSIXct("2013-04-01"), y = 45, label = "New releases", size = 4, color = "red") + 
+  annotate("text", x = as.POSIXct("2010-10-01"), y = 95, label = "^ 151", size = 3.5) +
+  annotate("text", x = as.POSIXct("2010-06-01"), y = 60, label = "New releases", size = 4, color = "red") + 
   annotate("text", x = as.POSIXct("2013-04-01"), y = 60, label = "Metadata update", size = 4, color = "darkorange") +
   xlab("Month") + ylab("Releases per month") 
-ggsave(file="graphics/London-metadata.png", height = 4, width = 8, dpi = 100)
+ggsave(file="graphics/London-metadata.png", height = 2, width = 8, dpi = 100)
 
 #-------TAGS--------
 head(sort(table(lon.full$CATEGORIES), decreasing = TRUE))

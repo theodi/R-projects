@@ -18,7 +18,7 @@ Here are some of the general findings:
 
 2. **Poor metadata**. The data about open data seems to be incomplete, undocumented or hard to find. (Ironic, you may say.) On the plus side, there is enough metadata available to make this statement.
 
-3. A **new metric tau** (&tau;) to assess the **timeliness** of data. The World Bank scores "ok" with 0.54 (i.e., slightly more than half of the datasets are updated according to schedule.) The UK datastore scores even lower with 0.27 ("poor"). This could easily be improved by releasing *monthly* datasets on a more regular basis. 
+3. A **new metric tau** (&tau;) to assess the **timeliness** of data. The World Bank scores "ok" with 0.54 (i.e., slightly more than half of the datasets are updated according to schedule.) The UK datastore scores even lower with 0.27 ("poor"). For our case studies this could easily be improved by releasing *monthly* datasets on a more regular basis. 
 
 And in particular: 
 
@@ -189,9 +189,11 @@ Secondly, let's inspect the update frequency for those catalogues that have not 
 
 This looks promising: it's possible that for around half of them there was no reason to update the catalogue in 2013. 
 
-**Overall <mi>&tau;</mi> = 0.54**
+### The tau of the World Bank catalogue
 
-This breaks down as follows.
+The **overall <mi>&tau;</mi> = 0.54**, which means  slightly more than half of the datasets are updated according to schedule.
+
+This breaks down as follows:
 
 Update frequency | <mi>&tau;</mi> | count 
  :-- | :--: | --: 
@@ -237,6 +239,7 @@ The more relevant variable is however the **metadata** update cycle. (The metada
 
 #### Figure 2.2 The London datastore dataset releases and updates
 ![metadata](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-metadata.png)
+![metadata](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/london-metadata-modified.png)
 
 The vast majority is updated annually or more often. So what is the average time distance between a release and a metadata update? As you can see below, the most common value is 32 weeks, which is a bit more than 7 months. Unfortunately, this is driven by the big spike in September 2010. Many datasets are also updated within a few weeks, which does not support an up-to-date data catalogue.
 
