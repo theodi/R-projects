@@ -230,17 +230,18 @@ Hans Rosling, in an [interview](http://blog.okfn.org/2013/01/21/carbon-dioxide-d
 
 At the time of analysis the [London datastore](http://data.london.gov.uk) hosts 537 datasets. They were published with the following pattern since January 2010. 
 
-#### Figure 2.1 The London datastore dataset releases
-![releases](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-releases-per-month.png)
+#### Figure 2.1 The London datastore new data releases
+![releases](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/London-releases-per-month.png)
 
 The big spikes at the beginning are months were the London datastore released many similar datasets. For example, in August 2010 the Department for Education released a series of datasets. Or in October 2013 the London Fire and Emergency Planning Authority (LFEPA) added around a dozen datasets to the datastore. 
 
 The more relevant variable is however the **metadata** update cycle. (The metadata is the "Last Updated Date of the Dataset or metadata (in the London Datastore).") As we can see below, for the London datastore the month of September 2010 is a large outlier. We don't have a better explanation than a general update of the early releases, but comments are welcome. Otherwise the metadata updates slightly trail the release figures. They are **not**, as you might expect for an up-to-date datastore, particularly concentrated in recent months.
 
-#### Figure 2.2 The London datastore dataset releases and updates
-![metadata](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-metadata.png)
+#### Figure 2.2 The London datastore updates
 ![metadata](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/london-metadata-modified.png)
 
+#### Figure 2.3 The London datastore new data releases and updates
+![both](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/London-metadata.png)
 
 ### Conclusion
 
@@ -254,9 +255,9 @@ FALSE  TRUE
   434   103
 
 
-## 3. The UK Datastore ([data.gov.uk](http://data.gov.uk))
+## 3. The UK Datastore
 
-
+The UK datastore, [data.gov.uk](http://data.gov.uk), hosts more than 16,000 datasets, although at least 4,000 of them are currently unpublished.
 
 
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-last-major-modification.png)
