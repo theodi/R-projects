@@ -30,9 +30,7 @@ The London datastore hosts around 550 datasets. They were released with stark di
 
 #### 3. UK Datastore 
 
-The UK datastore scores low with a &tau; = 0.27 ("poor").
-
-
+The UK datastore has an irregular release cycle. Even worse, only around 25% (4,000) datasets include data on update frequency. This *may* be one of the reason why it performs so poorly on the &tau; with 0.27. The UK datastore updated almost 3/4 of its datasets in 2013.
 
 
 ## On the timeliness of data
@@ -45,7 +43,7 @@ Lastly, a dataset should always contain timely data. Some datasets such as the U
 
 ### The tau of data
 
-I propose the following metric for measuring the **timeliness** of data:
+I propose the following metric for measuring the **timeliness** of data. The **tau** (&tau;) can be interpreted as *the percentage of datasets up-to-date in a datastore*.
 
 <math xmlns="http://www.w3.org/1998/Math/MathML" mathsize="big">
   <mrow>
@@ -72,7 +70,7 @@ This is simply an indicator (1 or 0) whether the dataset's last update was furth
 
 By *substantial* we mean a new release of the data. Minor updates, for example if someone discovers a typo in the title and corrects it, should not appear as an update.
 
-The **tau** (&tau;) of a datastore is the average across datasets.
+The &tau; of a datastore is the average across datasets.
 
 <math xmlns="http://www.w3.org/1998/Math/MathML" mathsize="big">
   <mrow>
@@ -247,7 +245,7 @@ Otherwise the metadata updates slightly trail the release figures. They are *not
 
 ### The tau of the London datastore
 
-The **overall <mi>&tau;</mi> = 0.53**, which suggests, as with the World Bank, around half of the datasets are updated according to schedule. Some uncertainty persists as around 20% miss a measure of update frequency. However, the field "Last Updated Date of the Dataset or metadata (in the London datastore)" is a lot more general than needed.
+The **overall <mi>&tau;</mi> = 0.53**, which suggests, as with the World Bank, around half of the datasets are updated according to schedule. Some uncertainty persists as around 20% miss a measure of update frequency. However, the field "Last Updated Date of the Dataset or metadata (in the London datastore)" is more general than needed.
 
 Update frequency | <mi>&tau;</mi> | count 
  :-- | :--: | --: 
@@ -261,7 +259,8 @@ every 2 years | 1.00  |  1
 every 4 years | 1.00  |  7
 every 10 years| 1.00  | 29
 
-Given the distribution of the "last update" this is not surprising.
+The &delta; is again set at 40 days. "Annually" includes various qualitative codes such as "sporadically".
+
 
 ### Conclusion
 
@@ -270,20 +269,23 @@ Given the distribution of the "last update" this is not surprising.
 
 ## 3. The UK Datastore
 
-The UK datastore, [data.gov.uk](http://data.gov.uk), hosts more than 16,000 datasets, although at least 4,000 of them are currently unpublished.
+The UK datastore, [data.gov.uk](http://data.gov.uk), hosts more than 16,000 datasets, although at least 4,000 of them are currently unpublished. According to the variable `last_major_modification` most datasets were updated recently. Almost 3/4 were updated in 2013. 
 
+#### Figure 3.1 The UK datastore, histogram of last major modification 
 
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-last-major-modification.png)
 
-There is a substantial problem with missing data. This is one reason why the UK datastore performs not well. If we compare the distribution of 
+However, there is a substantial problem with missing data for `update_frequency`. This is one reason why the UK datastore performs not well. If we compare the distribution of all datasets with the one that omits missing `update_frequency` (only around 4,000 remain!), we see a different pattern. The updates are no longer concentrated in recent months.
+
+#### Figure 3.2 The UK datastore, last major modification with and without (orange) missing update frequency
 
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-last-major-modification-overlay.png)
 
-![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-created.png)
-![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-modified.png)
+
 
 ### The tau of the UK datastore
 
+The **overall <mi>&tau;</mi> = 0.27**, which is a poor figure and below the other two case studies. However, as mentioned above almost 3/4 of the update frequency data are missing. 
 
 Update frequency | <mi>&tau;</mi> | count 
  :-- | :--: | --: 
@@ -297,7 +299,13 @@ every 2 years | 0.06  |  17
 every 10 years| 1.00  | 129
 
 
+Given the strong pattern using all datasets, we might be inclined to assume the UK datastore does much better than the &tau; would suggest. The fact is, though, we cannot know without data. The distribution of "metadata_created" also has a spike September 2013 (see figure 3.3). This implies many datasets were added recently and that they may bias the `last_major_modification` variable. The release cycle is also highly irregular.
 
+#### Figure 3.3 The UK datastore, histogram of metadata created 
+![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-created.png)
+
+### Conclusion
+**The UK datastore has an irregular release cycle. Even worse, only around 25% (4,000) datasets include data on update frequency. This *may* be one of the reason why it performs so poorly on the &tau; with 0.27. The UK datastore updated almost 3/4 of its datasets in 2013.**
 
 
 [^1]: We use the words 'datastore' and 'data catalogue' interchangeably.
