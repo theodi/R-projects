@@ -42,7 +42,7 @@ I propose the following metric for measuring the **timeliness** of data:
 
 <math xmlns="http://www.w3.org/1998/Math/MathML" mathsize="big">
   <mrow>
-    <mi>i</mi>
+    <mi>timeliness</mi>
     <mo>=</mo>
      <mi mathvariant="bold">I</mi>
     <mfenced>
@@ -63,7 +63,7 @@ I propose the following metric for measuring the **timeliness** of data:
 
 This is simply an indicator (1 or 0) whether the dataset's last update was further ago than its update frequency. `I()` is the [indicator function](http://en.wikipedia.org/wiki/Indicator_function) and takes 1 if the ratio is bigger than 1 and zero otherwise. 
 
-By substantial we mean a new release of the data. Minor updates, for example if someone discovers a typo in the title and corrects it, should not appear as an update.
+By *substantial* we mean a new release of the data. Minor updates, for example if someone discovers a typo in the title and corrects it, should not appear as an update.
 
 The **tau** (&tau;) of a datastore is the average across datasets.
 
@@ -125,7 +125,7 @@ The **tau** (&tau;) of a datastore is the average across datasets.
 </math>
 
 
-`N` is the number of datasets in the catalogue. We can make this more flexible by introducing a &delta;: the "leeway" of days we allow the datastore for updating.
+N is the number of datasets in the catalogue. We can make this more flexible by introducing a &delta;: the "leeway" of days we allow the datastore for updating.
 
 A &tau; of 0 means the catalogue has no up-to-date datasets. A &tau; of 1 means all datasets are up-to-date. 
 
@@ -252,4 +252,11 @@ The vast majority is updated annually or more often. So what is the average time
 There is a substantial problem with missing data. 
 
 
+
+![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-last-major-modification.png)
+![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-created.png)
+![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-modified.png)
+
 [^1]: We use the words 'datastore' and 'data catalogue' interchangeably.
+
+

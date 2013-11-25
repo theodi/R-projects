@@ -266,7 +266,7 @@ ggsave("graphics/gov-last-major-modification.png", height = 1.7, width = 8, dpi 
 ggplot(data = gov.clean, aes(x = metadata_created)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
 ggsave("graphics/gov-metadata-created.png", height = 1.7, width = 8, dpi = 100)
 
-ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "black", binwidth = 24*60*60)
+ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "white", binwidth = 24*60*60)
 ggsave("graphics/gov-metadata-modified.png", height = 1.7, width = 8, dpi = 100)
 
 # Drop datasets with no update frequency
