@@ -46,6 +46,12 @@ This is the average of the indicator whether the dataset's last update was furth
 
 By substantial we mean a new release of the data. Minor updates, for example if someone discovers a typo in the title and corrects it, should not appear as an update.
 
+
+```
+tau =   sum over N I[ (update frequency + del) / (today – last substantial update) ]
+```
+We can make this more flexible by introducing a `del`: the "leeway" of days we allow the datastore for updating. 
+
 A `tau` of 0 means the catalogue has no up-to-date datasets. A `tau` of 1 means all datasets are up-to-date. 
 
 | `tau` | timeliness of data |
@@ -136,7 +142,7 @@ The World Bank updates its data catalogues with an irregular schedule. However, 
 
 While the update cycle of the World Bank's data catalogues seems reasonable, there are serious gaps in important indicators. For example, a key metric to mitigate climate change is carbon emissions. The most recent numbers are only from 2010! While this is certainly not the Bank's fault, an updated dataset should also contain timely data.
 
-<div style="width:600px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; line-height:20px"><div style="background-color:#333; padding:0px 5px; font-weight:bold"><div style="color:#fff; font-size:12px; line-height:20px;"><a href="http://data.worldbank.org/indicator/EN.ATM.CO2E.KT/countries?display=graph" style="color:#fff;text-decoration:none;" class="active">CO2 emissions (kt)</a></div></div><script type="text/javascript">widgetContext = { "url": "http://data.worldbank.org/widgets/indicator/0/web_widgets_3/EN.ATM.CO2E.KT/countries/1W", "width": 600, "height": 200, "widgetid": "web_widget_iframe_ea74e1142afed7b93751806f0dacae63" };</script><div id="web_widget_iframe_ea74e1142afed7b93751806f0dacae63"></div><script src="http://data.worldbank.org/profiles/datafinder/modules/contrib/web_widgets/iframe/web_widgets_iframe.js"></script><div style="font-size: 10px; color:#000">Data from <a href="http://data.worldbank.org/indicator/EN.ATM.CO2E.KT/countries?display=graph" style="color:#CCC;">World Bank</a></div></div>
+<div style="width:800px; "height": 250px; font-family:'Helvetica Neue', Helvetica, Arial, sans-serif; line-height:20px"><div style="background-color:#333; padding:0px 5px; font-weight:bold"><div style="color:#fff; font-size:12px; line-height:20px;"><a href="http://data.worldbank.org/indicator/EN.ATM.CO2E.KT/countries?display=graph" style="color:#fff;text-decoration:none;" class="active">CO2 emissions (kt)</a></div></div><script type="text/javascript">widgetContext = { "url": "http://data.worldbank.org/widgets/indicator/0/web_widgets_3/EN.ATM.CO2E.KT/countries/1W", "width": 800, "height": 200, "widgetid": "web_widget_iframe_ea74e1142afed7b93751806f0dacae63" };</script><div id="web_widget_iframe_ea74e1142afed7b93751806f0dacae63"></div><script src="http://data.worldbank.org/profiles/datafinder/modules/contrib/web_widgets/iframe/web_widgets_iframe.js"></script><div style="font-size: 10px; color:#000">Data from <a href="http://data.worldbank.org/indicator/EN.ATM.CO2E.KT/countries?display=graph" style="color:#CCC;">World Bank</a></div></div>
 
 Hans Rosling, in an [interview](http://blog.okfn.org/2013/01/21/carbon-dioxide-data-is-not-on-the-worlds-dashboard-says-hans-rosling/), puts it in colourful words: 
 

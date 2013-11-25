@@ -210,16 +210,79 @@ summary(gov[dates])
 head(sort(table(gov$update_frequency), decreasing = TRUE), n = 30)
 head(sort(table(gov$license), decreasing = TRUE), n = 10)
 
-# Remove unpublished
+# Remove unpublished and misc!
 gov.clean <- gov[gov[, "license"] != "unpublished", ]
+gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "No plans to update at present", ]
+gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "Not applicable", ]
+gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "never", ]
+gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "n/a", ]
+gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "discontinued", ]
+gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "once", ]
 
+
+gov.clean$update_frequency <- tolower(gov.clean$update_frequency)                       
+head(sort(table(gov.clean$update_frequency), decreasing = TRUE), n = 30)
+
+
+# Being generous here
+gov.clean$freq.days  <- NA
+gov.clean$freq.days <- as.numeric(recode(gov.clean$update_frequency, as.factor.result = FALSE, 
+                            " 'half-hourly' = 1;
+                            'hourly' = 1;
+                            'daily' = 1;
+                            'weekly' = 7;
+                            'monthly' = 31; 
+                            'quarterly' = 92;
+                            'biannually' = 183;
+                            'every 6 months' = 183;
+                            '6 months' = 183;
+                            'every six months' = 183;
+                            'six monthly' = 183;
+                            '6 monthly' = 183;
+                            'twice yearly' = 183;
+                            'twice a year' = 183;
+                            'annually' = 365;
+                            'annual' = 365;
+                            'varied' = 365;
+                            'various' = 365;
+                            'other' = 365;
+                            'as required' = 365;
+                            'as needed' = 365;
+                            'as needed depending on legislative changes' = 365;
+                            'yearly' = 365;
+                            '2 years' = 730;
+                            'every two years' = 730;
+                            'every 10 years' = 3652; "))
+
+# Count missing
+table(is.na(gov.clean$freq.days))
+table(is.na(gov.clean$update_frequency))
+
+
+# Plots
 ggplot(data = gov.clean, aes(x = last_major_modification)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
+ggsave("graphics/gov-last-major-modification.png", height = 1.7, width = 8, dpi = 100)
+
 ggplot(data = gov.clean, aes(x = metadata_created)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
-ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "white", binwidth = 24*60*60)
+ggsave("graphics/gov-metadata-created.png", height = 1.7, width = 8, dpi = 100)
 
-# -------------------------------
-# Socrata
-#--------------------------------
-gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11-short-refined.csv", stringsAsFactors = FALSE, na.strings = "")
+ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "black", binwidth = 24*60*60)
+ggsave("graphics/gov-metadata-modified.png", height = 1.7, width = 8, dpi = 100)
 
+# Drop datasets with no update frequency
+gov.nomi <- gov.clean[which(is.na(gov.clean$freq.days) == FALSE), ]
+
+# Calculate tau
+# Allow for a number of days to refresh
+# Leeway also defind above, this is bad practice
+leeway  <- 40
+gov.nomi$today <- as.POSIXct("2013-11-15")
+gov.nomi$days.diff <- as.numeric(gov.nomi$today - gov.nomi$last_major_modification)
+gov.nomi$ratio <- (gov.nomi$freq.days + leeway) / gov.nomi$days.diff
+gov.nomi$indicator <- 0 
+gov.nomi$indicator[which(gov.nomi$ratio >= 1)] <- 1
+
+round(mean(gov.nomi$indicator), 2)
+leeway
+ddply(gov.nomi, .(freq.days), summarise, tau = round(mean(indicator), 2), count = length(indicator))
 
