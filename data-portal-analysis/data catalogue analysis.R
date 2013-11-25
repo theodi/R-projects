@@ -140,7 +140,7 @@ ggplot(data = wb[!is.na(wb$Update.Frequency), ], aes(x = Update.Frequency)) +
 ggsave("graphics/update-frequency.png", height = 2.5, width = 8, dpi = 100)
 
 # Remove datasets with "No further updates planned" and missings
-wb.noup <- wb[which(wb$Update.Frequency != "no further updates planned"), ]
+wb.noup <- wb[!wb$Update.Frequency %in% c("no further updates planned"), ]
 # Remove factor level
 wb.noup$Update.Frequency <- factor(wb.noup$Update.Frequency, exclude = NULL)
 
@@ -211,14 +211,14 @@ head(sort(table(gov$update_frequency), decreasing = TRUE), n = 30)
 head(sort(table(gov$license), decreasing = TRUE), n = 10)
 
 # Remove unpublished and misc!
-gov.clean <- gov[gov[, "license"] != "unpublished", ]
-gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "No plans to update at present", ]
-gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "Not applicable", ]
-gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "never", ]
-gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "n/a", ]
-gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "discontinued", ]
-gov.clean <- gov.clean[gov.clean[, "update_frequency"] != "once", ]
-
+gov.clean <- gov[!gov$license %in% c("unpublished"), ]
+gov.clean <- gov.clean[!gov.clean$update_frequency %in% 
+                c("No plans to update at present", 
+                  "Not applicable",
+                  "never",
+                  "n/a", 
+                  "discontinued", 
+                  "once"), ]
 
 gov.clean$update_frequency <- tolower(gov.clean$update_frequency)                       
 head(sort(table(gov.clean$update_frequency), decreasing = TRUE), n = 30)
@@ -270,7 +270,7 @@ ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "b
 ggsave("graphics/gov-metadata-modified.png", height = 1.7, width = 8, dpi = 100)
 
 # Drop datasets with no update frequency
-gov.nomi <- gov.clean[which(is.na(gov.clean$freq.days) == FALSE), ]
+gov.nomi <- gov.clean[!is.na(gov.clean$freq.days), ]
 
 # Calculate tau
 # Allow for a number of days to refresh

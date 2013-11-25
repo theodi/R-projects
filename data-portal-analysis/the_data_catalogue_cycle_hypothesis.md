@@ -1,6 +1,8 @@
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script> 
+
 # The Data Catalogue Update Hypothesis: Are Datasets Up-to-date?
 
-Governments and institutions often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.o[rg/) are discoverable and up-to-date datasets. We looked at three case studies and found further evidence from an [analysis of Socrata's](http://thomaslevine.com/!/data-updatedness) data catalogues. 
+Governments and institutions often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.o[rg/) are discoverable and up-to-date datasets. We looked at three case studies and found further evidence from an [analysis of Socrata's](http://thomaslevine.com/!/data-updatedness) data catalogues.[^1] 
 
 This matters for several reasons, for example:
 
@@ -16,7 +18,7 @@ Here are some of the general findings:
 
 2. **Poor metadata**. The data about open data seems to be incomplete, undocumented or hard to find. (Ironic, you may say.) On the plus side, there is enough metadata available to make this statement.
 
-3. What goes on *within* datasets is another question...
+3. A **new metric tau** (&tau;) to assess the **timeliness** of data. The World Bank scores "ok" with 0.54 (i.e., slightly more than half of the datasets are updated according to schedule.) The UK datastore scores even lower with 0.27 ("poor"). This could easily be improved by releasing *monthly* datasets on a more regular basis. 
 
 And in particular: 
 
@@ -34,35 +36,108 @@ Arguable the biggest area of "dark matter" comes from **deleted datasets**. To u
 
 Lastly, a dataset should always contain timely data. Some datasets such as the UK census or, [below](addendum), carbon emissions, may be technically up-to-date, but are too far behind reality in their schedule. Here we will not discuss the questions of what is timely data and focus on the update cycle of datastores.
 
-### The `tau` of data
+### The tau of data
 
-I propose the following metric:
+I propose the following metric for measuring the **timeliness** of data:
 
-```
-tau =   sum over N I[ update frequency / (today – last substantial update) ]
-```
+<math xmlns="http://www.w3.org/1998/Math/MathML" mathsize="big">
+  <mrow>
+    <mi>i</mi>
+    <mo>=</mo>
+     <mi mathvariant="bold">I</mi>
+    <mfenced>
+      <mfrac>
+      <mrow>
+        <mi>update frequency</mi>
+      </mrow>
+      <mrow>
+        <mi>today</mi>
+		<mo>&#x2212;</mo>
+        <mi>last substantial update</mi>        
+      </mrow>
+   	</mfrac>
+   </mfenced>
+  </mrow>
+</math>
 
-This is the average of the indicator whether the dataset's last update was further ago than its update frequency. `I()` is the [indicator function](indicator) and takes 1 if the ratio is bigger than 1 and zero otherwise. `N` is the number of datasets in the catalogue. 
+
+This is simply an indicator (1 or 0) whether the dataset's last update was further ago than its update frequency. `I()` is the [indicator function](http://en.wikipedia.org/wiki/Indicator_function) and takes 1 if the ratio is bigger than 1 and zero otherwise. 
 
 By substantial we mean a new release of the data. Minor updates, for example if someone discovers a typo in the title and corrects it, should not appear as an update.
 
+The **tau** (&tau;) of a datastore is the average across datasets.
 
-```
-tau =   sum over N I[ (update frequency + del) / (today – last substantial update) ]
-```
-We can make this more flexible by introducing a `del`: the "leeway" of days we allow the datastore for updating. 
+<math xmlns="http://www.w3.org/1998/Math/MathML" mathsize="big">
+  <mrow>
+    <mi>&tau;</mi>
+    <mo>=</mo>
+        <mfrac>
+          <mrow>
+            <mn>1</mn>
+          </mrow>
+          <mrow>
+            <mi>N</mi>
+          </mrow>
+        </mfrac>
+         <munderover>
+              <mrow>
+                <mo>&#x2211;</mo>
+              </mrow>
+              <mrow>
+                <mi>i</mi>
+                <mo>=</mo>
+                <mn>1</mn>
+              </mrow>
+              <mrow>
+                <mi>N</mi>
+              </mrow>
+            </munderover>
+    <mi mathvariant="bold">I</mi>
+     <mfenced>
+      <mfrac>
+      <mrow>
+         <msub>
+           <mrow>
+             <mi>update frequency</mi>
+           </mrow>
+           <mrow>
+             <mi>i</mi>
+           </mrow>
+         </msub>
+     <mo>+</mo>
+     <mi>&delta;</mi>
+     </mrow>
+      <mrow>
+        <mi>today</mi>
+		<mo>&#x2212;</mo>
+		 <msub>
+           <mrow>
+            <mi>last substantial update</mi>        
+           </mrow>
+           <mrow>
+             <mi>i</mi>
+           </mrow>
+         </msub>
+      </mrow>
+   	</mfrac>
+   </mfenced>
+  </mrow>
+</math>
 
-A `tau` of 0 means the catalogue has no up-to-date datasets. A `tau` of 1 means all datasets are up-to-date. 
 
-| `tau` | timeliness of data |
+`N` is the number of datasets in the catalogue. We can make this more flexible by introducing a &delta;: the "leeway" of days we allow the datastore for updating.
+
+A &tau; of 0 means the catalogue has no up-to-date datasets. A &tau; of 1 means all datasets are up-to-date. 
+
+| &tau; (tau)| timeliness of data |
 | :-- | -----: |
 | 0.91 - 1 | Exemplar |
 | 0.71 - 0.9 | Standard | 
 | 0.51 - 0.7 | OK | 
-| 0.31 - 0.5 | Poor | 
-| 0      - 0.3 | Obsolete | 
+| 0.26 - 0.5 | Poor | 
+| 0      - 0.25 | Obsolete | 
 
-To implement the `tau`, you need to record the last substantial update and a standardised update frequency for all datasets (preferably in days; labels such as "biannually", "Bi-annually" and "every 6 months" are not helpful.)
+To implement the &tau;, you need to record the last substantial update and a standardised update frequency for all datasets (preferably in days; labels such as "biannually", "Bi-annually" and "every 6 months" are not helpful.)
 
 
 ## Methodology
@@ -114,11 +189,11 @@ Secondly, let's inspect the update frequency for those catalogues that have not 
 
 This looks promising: it's possible that for around half of them there was no reason to update the catalogue in 2013. 
 
-**Overall `tau` = 0.54**
+**Overall <mi>&tau;</mi> = 0.54**
 
 This breaks down as follows.
 
-Update frequency | `tau` | count 
+Update frequency | <mi>&tau;</mi> | count 
  :-- | --: | --: 
  no fixed schedule | 0.59  |  27 
              daily| 1.00  |   5
@@ -174,3 +249,7 @@ The vast majority is updated annually or more often. So what is the average time
 
 ## 3. The UK Datastore ([data.gov.uk](http://data.gov.uk))
 
+There is a substantial problem with missing data. 
+
+
+[^1]: We use the words 'datastore' and 'data catalogue' interchangeably.
