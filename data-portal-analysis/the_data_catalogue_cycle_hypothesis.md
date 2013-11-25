@@ -1,5 +1,3 @@
-<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js"></script> 
-
 # The Data Catalogue Update Hypothesis: Are Datasets Up-to-date?
 
 Governments and institutions often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.o[rg/) are discoverable and up-to-date datasets. We looked at three case studies and found further evidence from an [analysis of Socrata's](http://thomaslevine.com/!/data-updatedness) data catalogues.[^1] 
@@ -10,7 +8,7 @@ This matters for several reasons, for example:
 * A measure of timeliness will put the spotlight on the update cycle. Automating this process can lead to gains in **efficiency**.
 * Current data is more useful. We can pre-empt counter-arguments such as "this is not relevant data anymore". It will ultimately support the **sustainability** of the open data ecosystem.
 
-## Findings
+## Findings and summary
 
 Here are some of the general findings:
 
@@ -18,13 +16,22 @@ Here are some of the general findings:
 
 2. **Poor metadata**. The data about open data seems to be incomplete, undocumented or hard to find. (Ironic, you may say.) On the plus side, there is enough metadata available to make this statement.
 
-3. A **new metric tau** (&tau;) to assess the **timeliness** of data. The World Bank scores "ok" with 0.54 (i.e., slightly more than half of the datasets are updated according to schedule.) The UK datastore scores even lower with 0.27 ("poor"). For our case studies this could easily be improved by releasing *monthly* datasets on a more regular basis. 
+3. A **new metric tau** (&tau;) to assess the **timeliness** of data. The World Bank scores "ok" with 0.54 (i.e., slightly more than half of the datasets are updated according to schedule.)  For our case studies this could easily be improved by releasing *monthly* datasets on a more regular basis. 
 
 And in particular: 
 
-1. World Bank
-2. London Datastore
-3. UK Datastore 
+#### 1. World Bank
+The World Bank updates its data catalogues with an irregular schedule. Of the 102 data catalogues that have revision dates and are planned to be updated, only 39 were not revised in 2013. Overall slightly more than half of the datasets were updated according to schedule (&tau; = 0.54). The number of missing dates is relatively large, which is a substantial caveat.
+     
+#### 2. London Datastore
+
+The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the updates are not concentrated in recent months and suggest a very poor update cycle (<mi>&tau;</mi> = 0.02). This is not a figure we would expect in an up-to-date data catalogue.
+
+
+#### 3. UK Datastore 
+
+The UK datastore scores low with a &tau; = 0.27 ("poor").
+
 
 
 
@@ -42,7 +49,7 @@ I propose the following metric for measuring the **timeliness** of data:
 
 <math xmlns="http://www.w3.org/1998/Math/MathML" mathsize="big">
   <mrow>
-    <mi>timeliness</mi>
+    <mi timeliness>timeliness</mi>
     <mo>=</mo>
      <mi mathvariant="bold">I</mi>
     <mfenced>
@@ -110,14 +117,15 @@ The **tau** (&tau;) of a datastore is the average across datasets.
       <mrow>
         <mi>today</mi>
 		<mo>&#x2212;</mo>
-		 <msub>
+         <msub>
            <mrow>
-            <mi>last substantial update</mi>        
+             <mi>last substantial update</mi>
            </mrow>
            <mrow>
              <mi>i</mi>
            </mrow>
-         </msub>
+         </msub>        
+       </mrow>
       </mrow>
    	</mfrac>
    </mfenced>
@@ -125,7 +133,7 @@ The **tau** (&tau;) of a datastore is the average across datasets.
 </math>
 
 
-N is the number of datasets in the catalogue. We can make this more flexible by introducing a &delta;: the "leeway" of days we allow the datastore for updating.
+N is the number of datasets in the catalogue. We can make this more flexible by introducing a &delta;: the "leeway" of days we allow the datastore for updating. In our case studies we allowed for an extra 40 days.<!--We can introduce even more flexibility by allowing it to change by any category:       <math><msub><mrow><mi>&delta;</mi></mrow><mrow><mi>i</mi></mrow></msub></math>.-->
 
 A &tau; of 0 means the catalogue has no up-to-date datasets. A &tau; of 1 means all datasets are up-to-date. 
 
@@ -137,7 +145,7 @@ A &tau; of 0 means the catalogue has no up-to-date datasets. A &tau; of 1 means 
 | 0.26 - 0.5 | Poor | 
 | 0      - 0.25 | Obsolete | 
 
-To implement the &tau;, you need to record the last substantial update and a standardised update frequency for all datasets (preferably in days; labels such as "biannually", "Bi-annually" and "every 6 months" are not helpful.)
+To implement the &tau;, you need to record two variables: the last substantial update and a standardised update frequency for all datasets (preferably in days; labels such as "biannually", "Bi-annually" and "every 6 months" are not helpful.)
 
 
 ## Methodology
@@ -151,7 +159,7 @@ An additional difficulty is that an uneven release cycle can stem from
 1. datasets that differ substantially in their update cycle; and
 2. "waves" of updating datasets unrelated to the availability at the source.
 
-Without additional information we cannot distinguish between the two explanations.  Even if we know how often datasets have to be updated, without a proper metric the answer will only be qualitative and suggestive.
+Without additional information we cannot distinguish between the two explanations.  Even if we know how often datasets have to be updated, without a standardised metric the answer will only be suggestive. We therefore devised an unambiguous metric, the tau of data. However, "garbage in, garbage out", its validity relies on the underlying quality of the data. In our case studies the number of missing data poses substantial reason for concern.
 
 
 
@@ -168,7 +176,7 @@ The catalogues were last updated (`last revision date`) as follows:
 We can see that the World Bank updated more than half of its data catalogues in 2013.
 
 #### Figure 1.1: World Bank data catalogue last revision date 
-![last revision](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/last-revision.png)
+![last revision](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/last-revision.png)
 
 (The 2005 figures are an artefact because in the original data they are dated as 1905.)
 
@@ -179,19 +187,13 @@ It is also clear that the update cycle has clear spikes in certain months and is
 Not all datasets have to be updated within the last year. Below we can see that some update frequencies are longer than a year or are even not planned.
 
 #### Figure 1.2: World Bank data catalogue update frequency
-![update frequency](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/update-frequency.png)
+![update frequency](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/update-frequency.png)
 
-What happens if we only look at the catalogues that were not updated in 2013?
-First, let's remove the 23 catalogues that are not planned to be updated.
-Secondly, let's inspect the update frequency for those catalogues that have not been updated in 2013. (We could get more granular here, by quarter or month, but simple will do.)
-
-
-
-This looks promising: it's possible that for around half of them there was no reason to update the catalogue in 2013. 
+What happens if we look at the last update *taking into account the update frequency*? First, let's remove the 23 catalogues that are not planned to be updated. Secondly, we can now calculated the tau as outlined in the section above.
 
 ### The tau of the World Bank catalogue
 
-The **overall <mi>&tau;</mi> = 0.54**, which means  slightly more than half of the datasets are updated according to schedule.
+The **overall <mi>&tau;</mi> = 0.54**, which means slightly more than half of the datasets are updated according to schedule.
 
 This breaks down as follows:
 
@@ -206,16 +208,14 @@ Update frequency | <mi>&tau;</mi> | count
           annually| 0.33  |  30
           annual +| 0.33  |  15       
 
-To account for I added a arbitrary number of 40 days. "no fixed schedule" is assumed to be two years, whereas "annual +" a thousand days.
+To account for a small delay in publishing we added 40 days to the update frequency (the &delta;). "no fixed schedule" is assumed to be two years, which is generous. We set "annual +" to mean a thousand days.
 
 ### Conclusion
 
-The World Bank updates its data catalogues with an irregular schedule. However, of the 102 data catalogues that have revision dates and are planned to be updated, only 39 were not revised in 2013. We estimate that of these 39 data catalogues around half do not have an updated release at the source. (The number of missing dates is relatively large, which is a substantial caveat.)
+**The World Bank updates its data catalogues with an irregular schedule. Of the 102 data catalogues that have revision dates and are planned to be updated, only 39 were not revised in 2013. Overall slightly more than half of the datasets were updated according to schedule (&tau; = 0.54). The number of missing dates is relatively large, which is a substantial caveat.**
 
-<!--This is a positive framing – we could also say "hasn't updated around 20%"-->
-**This means that the World Bank updates around 80% of its data catalogues. In this case study we therefore *cannot* reject hypothesis 1b: despite the uneven release cycle we may support the hypothesis that data catalogues are continuously updated.**
 
-### Addendum
+#### Addendum: up-to-date datasets ≠ up-to-date data
 
 While the update cycle of the World Bank's data catalogues seems reasonable, there are serious gaps in important indicators. For example, a key metric to mitigate climate change is carbon emissions. The most recent numbers are only from 2010! While this is certainly not the Bank's fault, an updated dataset should also contain timely data.
 
@@ -230,29 +230,42 @@ Hans Rosling, in an [interview](http://blog.okfn.org/2013/01/21/carbon-dioxide-d
 
 At the time of analysis the [London datastore](http://data.london.gov.uk) hosts 537 datasets. They were published with the following pattern since January 2010. 
 
-#### Figure 2.1 The London datastore new data releases
+#### Figure 2.1 The London datastore, new data releases per month
 ![releases](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/London-releases-per-month.png)
 
 The big spikes at the beginning are months were the London datastore released many similar datasets. For example, in August 2010 the Department for Education released a series of datasets. Or in October 2013 the London Fire and Emergency Planning Authority (LFEPA) added around a dozen datasets to the datastore. 
 
-The more relevant variable is however the **metadata** update cycle. (The metadata is the "Last Updated Date of the Dataset or metadata (in the London Datastore).") As we can see below, for the London datastore the month of September 2010 is a large outlier. We don't have a better explanation than a general update of the early releases, but comments are welcome. Otherwise the metadata updates slightly trail the release figures. They are **not**, as you might expect for an up-to-date datastore, particularly concentrated in recent months.
-
-#### Figure 2.2 The London datastore updates
+The more relevant variable is however the **metadata update** cycle. The metadata update is the "Last Updated Date of the Dataset or metadata (in the London Datastore)." As we can see below, for the London datastore the month of September 2010 is a large outlier. We don't have a better explanation than a general update of the early releases, but comments are welcome. 
+#### Figure 2.2 The London datastore, metadata updates histogram
 ![metadata](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/london-metadata-modified.png)
 
-#### Figure 2.3 The London datastore new data releases and updates
+Otherwise the metadata updates slightly trail the release figures. They are *not*, as you might expect for an up-to-date datastore, particularly concentrated in recent months. Below are figure 2.1 and 2.2 combined in one graphic.
+
+#### Figure 2.3 The London datastore, new data releases and updates combined
 ![both](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/London-metadata.png)
+
+
+### The tau of the London datastore
+
+The **overall <mi>&tau;</mi> = 0.53**, which suggests, as with the World Bank, around half of the datasets are updated according to schedule. Some uncertainty persists as around 20% miss a measure of update frequency. However, the field "Last Updated Date of the Dataset or metadata (in the London datastore)" is a lot more general than needed.
+
+Update frequency | <mi>&tau;</mi> | count 
+ :-- | :--: | --: 
+     daily| 0.00  |  2
+    weekly| 0.00  |  2
+   monthly| 0.57  | 37
+ quarterly| 0.51  | 57
+biannually| 0.20  | 10
+annually (and various)| 0.47  | 216
+every 2 years | 1.00  |  1
+every 4 years | 1.00  |  7
+every 10 years| 1.00  | 29
+
+Given the distribution of the "last update" this is not surprising.
 
 ### Conclusion
 
-**The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the metadata updates are not concentrated in recent months and often happen soon after the original release. This is not a pattern we would expect in an up-to-date data catalogue.**
-
-### Tau
-
-table(is.na(lon.full$UPDATE_FREQUENCY))
-
-FALSE  TRUE 
-  434   103
+**The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the updates are not concentrated in recent months, which suggests a poor update cycle. The &tau; = 0.53 is optimistic because the `metadata update` variable possibly includes minor updates.**
 
 
 ## 3. The UK Datastore
@@ -269,6 +282,8 @@ There is a substantial problem with missing data. This is one reason why the UK 
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-created.png)
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-modified.png)
 
+### The tau of the UK datastore
+
 
 Update frequency | <mi>&tau;</mi> | count 
  :-- | :--: | --: 
@@ -280,6 +295,9 @@ biannually| 0.23  | 228
 annually (and various)| 0.38  | 1464
 every 2 years | 0.06  |  17
 every 10 years| 1.00  | 129
+
+
+
 
 
 [^1]: We use the words 'datastore' and 'data catalogue' interchangeably.

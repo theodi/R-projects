@@ -20,7 +20,7 @@ str(lon)
 
 # Recognise dates
 lon$date.release <- as.Date(paste("01", lon$DDATE), "%d %B %Y")
-lon$metadata <- as.POSIXct(as.Date(lon$METADATA_UPDATE, "%d/%m/%Y"))
+lon$metadata <- as.Date(as.Date(lon$METADATA_UPDATE, "%d/%m/%Y"))
 row.sample(lon, 30)[, "metadata"] # test
   
 # Sort by time
@@ -128,19 +128,23 @@ lon$freq.days <- as.numeric(recode(lon$UPDATE_FREQUENCY, as.factor.result = FALS
                             '4 years' = 1461;
                             'every 5 years' = 1826;
                             'every 10 years' = 3652; "))
+
+# Drop datasets with no update frequency
+lon.nomi <- lon[!is.na(lon$freq.days), ]
+
 # Calculate tau
 # Allow for a number of days to refresh
 # Leeway also defind below, this is bad practice
 leeway  <- 40
-lon$today <- as.POSIXct("2013-10-01")
-lon$days.diff <- as.numeric(lon$today - as.POSIXct(lon$metadata))
-lon$ratio <- (lon$freq.days + leeway) / lon$days.diff
-lon$indicator <- 0 
-lon$indicator[which(lon$ratio >= 1)] <- 1
+lon.nomi$today <- as.Date("2013-10-01")
+lon.nomi$days.diff <- as.numeric(lon.nomi$today - lon.nomi$metadata)
+lon.nomi$ratio <- (lon.nomi$freq.days + leeway) / lon.nomi$days.diff
+lon.nomi$indicator <- 0 
+lon.nomi$indicator[which(lon.nomi$ratio >= 1)] <- 1
 
-round(mean(lon$indicator), 2)
+round(mean(lon.nomi$indicator), 2)
 leeway
-ddply(lon, .(freq.days), summarise, tau = round(mean(indicator), 2), count = length(indicator))
+ddply(lon.nomi, .(freq.days), summarise, tau = round(mean(indicator), 2), count = length(indicator))
 
 ggplot(data = lon, aes(x = metadata)) + geom_histogram(color = "white", fill = "orange", binwidth = 30*24*60*60) +
   xlab("'Last Updated Date of the Dataset or metadata (in the London datastore)'")
