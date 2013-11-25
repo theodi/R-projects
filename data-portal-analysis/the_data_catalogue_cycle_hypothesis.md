@@ -241,10 +241,6 @@ The more relevant variable is however the **metadata** update cycle. (The metada
 ![metadata](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-metadata.png)
 ![metadata](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/london-metadata-modified.png)
 
-The vast majority is updated annually or more often. So what is the average time distance between a release and a metadata update? As you can see below, the most common value is 32 weeks, which is a bit more than 7 months. Unfortunately, this is driven by the big spike in September 2010. Many datasets are also updated within a few weeks, which does not support an up-to-date data catalogue.
-
-#### Figure 2.3 The London datastore update frequency
-![difference](https://raw.github.com/theodi/R-projects/master/data-portal-analysis/graphics/London-month-diff-histogram.png)
 
 ### Conclusion
 
