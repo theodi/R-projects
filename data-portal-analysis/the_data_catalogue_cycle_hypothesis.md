@@ -194,7 +194,7 @@ This looks promising: it's possible that for around half of them there was no re
 This breaks down as follows.
 
 Update frequency | <mi>&tau;</mi> | count 
- :-- | --: | --: 
+ :-- | :--: | --: 
  no fixed schedule | 0.59  |  27 
              daily| 1.00  |   5
             weekly| 1.00  |   1
@@ -247,15 +247,40 @@ The vast majority is updated annually or more often. So what is the average time
 
 **The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the metadata updates are not concentrated in recent months and often happen soon after the original release. This is not a pattern we would expect in an up-to-date data catalogue.**
 
+### Tau
+
+table(is.na(lon.full$UPDATE_FREQUENCY))
+
+FALSE  TRUE 
+  434   103
+
+
 ## 3. The UK Datastore ([data.gov.uk](http://data.gov.uk))
 
-There is a substantial problem with missing data. 
 
 
 
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-last-major-modification.png)
+
+There is a substantial problem with missing data. This is one reason why the UK datastore performs not well. If we compare the distribution of 
+
+![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-last-major-modification-overlay.png)
+
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-created.png)
 ![data.gov.uk](https://raw.github.com/theodi/R-projects/updata-cycle-new/data-portal-analysis/graphics/gov-metadata-modified.png)
+
+
+Update frequency | <mi>&tau;</mi> | count 
+ :-- | :--: | --: 
+     daily| 0.02  |  45
+    weekly| 0.00  |  12
+   monthly| 0.11  | 1445
+ quarterly| 0.29  | 638
+biannually| 0.23  | 228
+annually (and various)| 0.38  | 1464
+every 2 years | 0.06  |  17
+every 10 years| 1.00  | 129
+
 
 [^1]: We use the words 'datastore' and 'data catalogue' interchangeably.
 
