@@ -25,7 +25,7 @@ The World Bank updates its data catalogues with an irregular schedule. Of the 10
      
 #### 2. London Datastore
 
-The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the updates are not concentrated in recent months and suggest a very poor update cycle (<mi>&tau;</mi> = 0.02). This is not a figure we would expect in an up-to-date data catalogue.
+The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the updates are not concentrated in recent months, which suggests a poor update cycle. The &tau; = 0.53 is optimistic because its `metadata update` variable possibly includes minor updates.
 
 
 #### 3. UK Datastore 
@@ -264,7 +264,7 @@ The &delta; is again set at 40 days. "Annually" includes various qualitative cod
 
 ### Conclusion
 
-**The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the updates are not concentrated in recent months, which suggests a poor update cycle. The &tau; = 0.53 is optimistic because the `metadata update` variable possibly includes minor updates.**
+**The London datastore hosts around 550 datasets. They were released with stark differences in some months over the last three years. More importantly, the updates are not concentrated in recent months, which suggests a poor update cycle. The &tau; = 0.53 is optimistic because its `metadata update` variable possibly includes minor updates.**
 
 
 ## 3. The UK Datastore
