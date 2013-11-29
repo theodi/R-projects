@@ -7,6 +7,7 @@ library(car)
 library("directlabels")
 source("functions.r")
 theme_set(theme_minimal(base_family = "Helvetica Neue"))
+options(stringsAsFactors = FALSE)
 
 # -------------------------------
 # London Data Store
