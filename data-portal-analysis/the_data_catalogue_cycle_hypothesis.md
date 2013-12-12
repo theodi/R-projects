@@ -111,6 +111,8 @@ The &tau; of a datastore is the average across datasets.
              <mi>i</mi>
            </mrow>
          </msub>
+        <mo>&sdot;</mo>
+        <mi>&lambda;</mi>
      <mo>+</mo>
      <mi>&delta;</mi>
      </mrow>
@@ -133,7 +135,7 @@ The &tau; of a datastore is the average across datasets.
 </math>
 
 
-N is the number of datasets in the catalogue. We can make this more flexible by introducing a &delta;: the "leeway" of days we allow the datastore for updating. In our case studies we allowed for an extra 40 days.<!--We can introduce even more flexibility by allowing it to change by any category:       <math><msub><mrow><mi>&delta;</mi></mrow><mrow><mi>i</mi></mrow></msub></math>.-->
+N is the number of datasets in the catalogue. We can make this more flexible by introducing two paramters, δ and &lambda;: the "leeway" of days we allow the datastore for updating. In our case studies we allowed for an extra 40 days.<!--We can introduce even more flexibility by allowing it to change by any category:       <math><msub><mrow><mi>&delta;</mi></mrow><mrow><mi>i</mi></mrow></msub></math>.-->
 
 A &tau; of 0 means the catalogue has no up-to-date datasets. A &tau; of 1 means all datasets are up-to-date. 
 
