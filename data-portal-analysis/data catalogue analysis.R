@@ -135,19 +135,22 @@ lon.nomi <- lon[!is.na(lon$freq.days), ]
 
 # Calculate tau
 # Allow for a number of days to refresh
-# Leeway also defind below, this is bad practice
-leeway  <- 40
+# Leeway also defind below (with identical parameters), this is bad practice
+delta  <- 1
+lambda <- 1 + 0.1
 lon.nomi$today <- as.Date("2013-10-01")
 lon.nomi$days.diff <- as.numeric(lon.nomi$today - lon.nomi$metadata)
-lon.nomi$ratio <- (lon.nomi$freq.days + leeway) / lon.nomi$days.diff
+lon.nomi$ratio <- (lon.nomi$freq.days * lambda + delta) / lon.nomi$days.diff
 lon.nomi$indicator <- 0 
 lon.nomi$indicator[which(lon.nomi$ratio >= 1)] <- 1
 
 round(mean(lon.nomi$indicator), 2)
-leeway
+delta
+lambda
 ddply(lon.nomi, .(freq.days), summarise, tau = round(mean(indicator), 2), count = length(indicator))
 
-ggplot(data = lon, aes(x = metadata)) + geom_histogram(color = "white", fill = "orange", binwidth = 30*24*60*60) +
+# Alternative chart
+ggplot(data = lon, aes(x = metadata)) + geom_histogram(color = "white", fill = "orange") +
   xlab("'Last Updated Date of the Dataset or metadata (in the London datastore)'")
 ggsave("graphics/london-metadata-modified.png", height = 1.7, width = 8, dpi = 100)
 
@@ -231,12 +234,16 @@ wb.noup$freq.days <- recode(wb.noup$Update.Frequency, as.factor.result = FALSE,
                             'annually' = 365;
                             'annual +' = 1000; ")
 
+# Drop datasets with no update frequency
+wb.noup <- wb.noup[!is.na(wb.noup$freq.days), ]
+
 # Calculate tau
 # Allow for a number of days to refresh
-leeway <- 40
+delta  <- 1
+lambda <- 1 + 0.1
 wb.noup$today <- as.POSIXct("2013-11-05")
 wb.noup$days.diff <- as.numeric(wb.noup$today - wb.noup$last.revision)
-wb.noup$ratio <- (wb.noup$freq.days + leeway) / wb.noup$days.diff
+wb.noup$ratio <- (wb.noup$freq.days * lambda + delta) / wb.noup$days.diff
 wb.noup$indicator <- 0 
 wb.noup$indicator[which(wb.noup$ratio >= 1)] <- 1
 
@@ -338,15 +345,15 @@ gov.nomi <- gov.clean[!is.na(gov.clean$freq.days), ]
 # Calculate tau
 # Allow for a number of days to refresh
 # Leeway also defind above, this is bad practice
-leeway  <- 40
+delta  <- 1
+lambda <- 1 + 0.1
 gov.nomi$today <- as.POSIXct("2013-11-15")
 gov.nomi$days.diff <- as.numeric(gov.nomi$today - gov.nomi$last_major_modification)
-gov.nomi$ratio <- (gov.nomi$freq.days + leeway) / gov.nomi$days.diff
+gov.nomi$ratio <- (gov.nomi$freq.days * lambda + delta) / gov.nomi$days.diff
 gov.nomi$indicator <- 0 
 gov.nomi$indicator[which(gov.nomi$ratio >= 1)] <- 1
 
 round(mean(gov.nomi$indicator), 2)
-leeway
 ddply(gov.nomi, .(freq.days), summarise, tau = round(mean(indicator), 2), count = length(indicator))
 
 ggplot() + 
@@ -354,4 +361,11 @@ ggplot() +
   geom_histogram(data = gov.nomi, aes(x = last_major_modification, y = ..density..), color = "white", fill = "orange", alpha = 2/3, binwidth = 30*24*60*60) +
   theme(axis.text.y = element_blank())
 ggsave("graphics/gov-last-major-modification-overlay.png", height = 1.7, width = 8, dpi = 100)
+
+### data.table test
+library(data.table)
+GOV <- as.data.table(gov.nomi)
+tables()
+
+GOV[, list(tau = round(mean(indicator), 2), count = length(indicator)), by = freq.days][order(freq.days)]
 
