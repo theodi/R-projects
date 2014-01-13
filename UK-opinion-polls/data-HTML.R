@@ -41,15 +41,16 @@ extract.tables <- function(url, num, year) {
   return(x)
 }
 
-polls2013 <- extract.tables(url, 1, 2013)
-polls2012 <- extract.tables(url, 2, 2012)
-polls2011 <- extract.tables(url, 3, 2011)
-polls2010 <- extract.tables(url, 4, 2010)
+polls2014 <- extract.tables(url, 1, 2014)
+polls2013 <- extract.tables(url, 2, 2013)
+polls2012 <- extract.tables(url, 3, 2012)
+polls2011 <- extract.tables(url, 4, 2011)
+polls2010 <- extract.tables(url, 5, 2010)
 
 # Exclude general election results
 polls2010 <- polls2010[polls2010$sample.size < 20000000, ]
 
-polls  <- rbind(polls2013, polls2012, polls2011, polls2010)
+polls  <- rbind(polls2014, polls2013, polls2012, polls2011, polls2010)
 
 # Sort by date
 polls  <- polls[order(polls$sortdate), ]

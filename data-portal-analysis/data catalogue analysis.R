@@ -3,14 +3,16 @@ library(ggplot2)
 library(plyr)
 library(lubridate)
 library(scales)
+library(car)
 library("directlabels")
 source("functions.r")
 theme_set(theme_minimal(base_family = "Helvetica Neue"))
+options(stringsAsFactors = FALSE)
 
 # -------------------------------
 # London Data Store
 #--------------------------------
-lon.full <- read.csv("data/datastore-catalogue.csv", stringsAsFactors = FALSE)
+lon.full <- read.csv("data/datastore-catalogue.csv", stringsAsFactors = FALSE, na.strings = "")
 lon <- lon.full[, c("TITLE","DDATE", "UPDATE_FREQUENCY", "RELEASE_DATE", "METADATA_UPDATE")]
 str(lon)
 
@@ -19,7 +21,7 @@ str(lon)
 
 # Recognise dates
 lon$date.release <- as.Date(paste("01", lon$DDATE), "%d %B %Y")
-lon$metadata <- as.Date(lon$METADATA_UPDATE, "%d/%m/%Y")
+lon$metadata <- as.Date(as.Date(lon$METADATA_UPDATE, "%d/%m/%Y"))
 row.sample(lon, 30)[, "metadata"] # test
   
 # Sort by time
@@ -35,7 +37,7 @@ p.lon$date.release <- as.POSIXct(p.lon$date.release)
 
 ggplot(data=p.lon, aes(x=date.release, y=releases)) + geom_line(color = "#D60303") + 
   xlab("Month of release") + ylab("New datasets")
-ggsave(file="graphics/London-releases-per-month.png", height = 4, width = 8, dpi = 100)
+ggsave(file="graphics/London-releases-per-month.png", height = 2, width = 8, dpi = 100)
 
 
 # Hard coded last row - I am a bad person
@@ -70,15 +72,15 @@ ggplot() +
   geom_line(data = p.lon2, aes(x = meta.month, y = releases), color = "orange") +
   coord_cartesian(ylim = c(0,100)) +
   scale_x_datetime(breaks = date_breaks("1 year"), minor_breaks = date_breaks("3 months"), labels = date_format("%b %Y")) +
-  annotate("text", x = as.POSIXct("2010-11-01"), y = 98, label = "^ 151", size = 3.5) +
-  annotate("text", x = as.POSIXct("2013-04-01"), y = 45, label = "New releases", size = 4, color = "red") + 
+  annotate("text", x = as.POSIXct("2010-10-01"), y = 95, label = "^ 151", size = 3.5, color = "orange") +
+  annotate("text", x = as.POSIXct("2010-06-01"), y = 60, label = "New releases", size = 4, color = "red") + 
   annotate("text", x = as.POSIXct("2013-04-01"), y = 60, label = "Metadata update", size = 4, color = "darkorange") +
   xlab("Month") + ylab("Releases per month") 
-ggsave(file="graphics/London-metadata.png", height = 4, width = 8, dpi = 100)
+ggsave(file="graphics/London-metadata.png", height = 2, width = 8, dpi = 100)
 
 #-------TAGS--------
-head(sort(table(lon.full$CATEGORIES)), decreasing = TRUE)
-head(sort(table(lon.full$TAGS)), decreasing = TRUE)
+head(sort(table(lon.full$CATEGORIES), decreasing = TRUE))
+head(sort(table(lon.full$TAGS), decreasing = TRUE))
 
 library(tau)
 tags.c <-  textcnt(lon.full$CATEGORIES, split = "[[:space:][:punct:]]+", method = "string", n = 1L)
@@ -87,6 +89,70 @@ sort(tags.c, decreasing = TRUE)
 head(sort(tags.t, decreasing = TRUE), n = 20)
 
 write.csv(tags.c[-1], "data/london-categories.csv")
+
+#-------TAU--------
+lon$UPDATE_FREQUENCY  <- tolower(lon$UPDATE_FREQUENCY)
+table(is.na(lon$UPDATE_FREQUENCY))
+head(sort(table(lon$UPDATE_FREQUENCY), decreasing = TRUE), n = 20)
+
+lon$freq.days  <- NA
+lon$freq.days <- as.numeric(recode(lon$UPDATE_FREQUENCY, as.factor.result = FALSE, 
+                          " 'hourly' = 1;
+                            'daily' = 1;
+                            'weekly' = 7;
+                            'monthly' = 31; 
+                            'quarterly' = 92;
+                            'biannually' = 183;
+                            'bi-annually' = 183;
+                            'every 6 months' = 183;
+                            '6 months' = 183;
+                            'every six months' = 183;
+                            'six monthly' = 183;
+                            '6 monthly' = 183;
+                            'twice yearly' = 183;
+                            'twice a year' = 183;
+                            'annually' = 365;
+                            'annual' = 365;
+                            'varied' = 365;
+                            'various' = 365;
+                            'ongoing' = 365;
+                            'other' = 365;
+                            'ad hoc' = 365;
+                            'unknown' = 365;
+                            'sporadically' = 365;
+                            'as required' = 365;
+                            'as needed' = 365;
+                            'as needed depending on legislative changes' = 365;
+                            'yearly' = 365;
+                            '2 years' = 730;
+                            'every two years' = 730;
+                            '4 years' = 1461;
+                            'every 5 years' = 1826;
+                            'every 10 years' = 3652; "))
+
+# Drop datasets with no update frequency
+lon.nomi <- lon[!is.na(lon$freq.days), ]
+
+# Calculate tau
+# Allow for a number of days to refresh
+# Leeway also defind below (with identical parameters), this is bad practice
+delta  <- 1
+lambda <- 1 + 0.1
+lon.nomi$today <- as.Date("2013-10-01")
+lon.nomi$days.diff <- as.numeric(lon.nomi$today - lon.nomi$metadata)
+lon.nomi$ratio <- (lon.nomi$freq.days * lambda + delta) / lon.nomi$days.diff
+lon.nomi$indicator <- 0 
+lon.nomi$indicator[which(lon.nomi$ratio >= 1)] <- 1
+
+round(mean(lon.nomi$indicator), 2)
+delta
+lambda
+ddply(lon.nomi, .(freq.days), summarise, tau = round(mean(indicator), 2), count = length(indicator))
+
+# Alternative chart
+ggplot(data = lon, aes(x = metadata)) + geom_histogram(color = "white", fill = "orange") +
+  xlab("'Last Updated Date of the Dataset or metadata (in the London datastore)'")
+ggsave("graphics/london-metadata-modified.png", height = 1.7, width = 8, dpi = 100)
 
 
 # -------------------------------
@@ -105,6 +171,7 @@ wb$Last.Revision.Date[wb$Last.Revision.Date %in% "Current"] <- "01/11/2013"
 
 # Remove rows with missing dates and frequency because some dates are missingly legitimately
 wb <- wb[!is.na(wb$Update.Frequency) | !is.na(wb$Last.Revision.Date), ]
+ddply(wb, .(Update.Frequency), colwise(nmissing))
 
 # As Dates
 wb$last.revision  <- dmy(wb$Last.Revision.Date)
@@ -137,8 +204,8 @@ ggplot(data = wb[!is.na(wb$Update.Frequency), ], aes(x = Update.Frequency)) +
   coord_flip() + theme(axis.ticks.y = element_blank())
 ggsave("graphics/update-frequency.png", height = 2.5, width = 8, dpi = 100)
 
-# Remove datasets with "No further updates planned"
-wb.noup <- wb[which(wb$Update.Frequency != "no further updates planned"), ]
+# Remove datasets with "No further updates planned" and missings
+wb.noup <- wb[!wb$Update.Frequency %in% c("no further updates planned"), ]
 # Remove factor level
 wb.noup$Update.Frequency <- factor(wb.noup$Update.Frequency, exclude = NULL)
 
@@ -150,6 +217,38 @@ ggplot(data = wb.noup[which(wb.noup$last.revision < as.POSIXct("2013-01-01")), ]
 ggsave("graphics/update-frequency-not2013.png", height = 1.7, width = 8, dpi = 100)
 
 summary(wb.noup$Update.Frequency[which(wb.noup$last.revision > as.POSIXct("2013-01-01"))])
+
+#--------------
+# Calculate the Bank's tau
+# First we need to recode the frequency variable with some assumptions
+            
+# Being generous here
+wb.noup$freq.days <- NA
+wb.noup$freq.days <- recode(wb.noup$Update.Frequency, as.factor.result = FALSE, 
+                          " 'no fixed schedule' = 730;
+                            'daily' = 1;
+                            'weekly' = 7;
+                            'monthly' = 31; 
+                            'quarterly' = 92;
+                            'biannually' = 183;
+                            'annually' = 365;
+                            'annual +' = 1000; ")
+
+# Drop datasets with no update frequency
+wb.noup <- wb.noup[!is.na(wb.noup$freq.days), ]
+
+# Calculate tau
+# Allow for a number of days to refresh
+delta  <- 1
+lambda <- 1 + 0.1
+wb.noup$today <- as.POSIXct("2013-11-05")
+wb.noup$days.diff <- as.numeric(wb.noup$today - wb.noup$last.revision)
+wb.noup$ratio <- (wb.noup$freq.days * lambda + delta) / wb.noup$days.diff
+wb.noup$indicator <- 0 
+wb.noup$indicator[which(wb.noup$ratio >= 1)] <- 1
+
+round(mean(wb.noup$indicator), 2)
+ddply(wb.noup, .(Update.Frequency), summarise, tau = round(mean(indicator), 2), count = length(indicator))
 
 # -------------------------------
 # UK Data Store
@@ -181,16 +280,92 @@ summary(gov[dates])
 head(sort(table(gov$update_frequency), decreasing = TRUE), n = 30)
 head(sort(table(gov$license), decreasing = TRUE), n = 10)
 
-# Remove unpublished
-gov.clean <- gov[gov[, "license"] != "unpublished", ]
+# Remove unpublished and misc!
+gov.clean <- gov[!gov$license %in% c("unpublished"), ]
+gov.clean <- gov.clean[!gov.clean$update_frequency %in% 
+                c("No plans to update at present", 
+                  "Not applicable",
+                  "never",
+                  "n/a", 
+                  "discontinued", 
+                  "once"), ]
 
+gov.clean$update_frequency <- tolower(gov.clean$update_frequency)                       
+head(sort(table(gov.clean$update_frequency), decreasing = TRUE), n = 30)
+
+
+# Being generous here
+gov.clean$freq.days  <- NA
+gov.clean$freq.days <- as.numeric(recode(gov.clean$update_frequency, as.factor.result = FALSE, 
+                            " 'half-hourly' = 1;
+                            'hourly' = 1;
+                            'daily' = 1;
+                            'weekly' = 7;
+                            'monthly' = 31; 
+                            'quarterly' = 92;
+                            'biannually' = 183;
+                            'every 6 months' = 183;
+                            '6 months' = 183;
+                            'every six months' = 183;
+                            'six monthly' = 183;
+                            '6 monthly' = 183;
+                            'twice yearly' = 183;
+                            'twice a year' = 183;
+                            'annually' = 365;
+                            'annual' = 365;
+                            'varied' = 365;
+                            'various' = 365;
+                            'other' = 365;
+                            'as required' = 365;
+                            'as needed' = 365;
+                            'as needed depending on legislative changes' = 365;
+                            'yearly' = 365;
+                            '2 years' = 730;
+                            'every two years' = 730;
+                            'every 10 years' = 3652; "))
+
+# Count missing
+table(is.na(gov.clean$freq.days))
+table(is.na(gov.clean$update_frequency))
+
+
+# Plots
 ggplot(data = gov.clean, aes(x = last_major_modification)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
+ggsave("graphics/gov-last-major-modification.png", height = 1.7, width = 8, dpi = 100)
+
 ggplot(data = gov.clean, aes(x = metadata_created)) + geom_histogram(color = "white", binwidth = 30*24*60*60)
+ggsave("graphics/gov-metadata-created.png", height = 1.7, width = 8, dpi = 100)
+
 ggplot(data = gov.clean, aes(x = metadata_modified)) + geom_histogram(color = "white", binwidth = 24*60*60)
+ggsave("graphics/gov-metadata-modified.png", height = 1.7, width = 8, dpi = 100)
 
-# -------------------------------
-# Socrata
-#--------------------------------
-gov <- read.csv("data/data.gov.uk-ckan-meta-data-2013-11-11-short-refined.csv", stringsAsFactors = FALSE, na.strings = "")
+# Drop datasets with no update frequency
+gov.nomi <- gov.clean[!is.na(gov.clean$freq.days), ]
 
+# Calculate tau
+# Allow for a number of days to refresh
+# Leeway also defind above, this is bad practice
+delta  <- 1
+lambda <- 1 + 0.1
+gov.nomi$today <- as.POSIXct("2013-11-15")
+gov.nomi$days.diff <- as.numeric(gov.nomi$today - gov.nomi$last_major_modification)
+gov.nomi$ratio <- (gov.nomi$freq.days * lambda + delta) / gov.nomi$days.diff
+gov.nomi$indicator <- 0 
+gov.nomi$indicator[which(gov.nomi$ratio >= 1)] <- 1
+
+round(mean(gov.nomi$indicator), 2)
+ddply(gov.nomi, .(freq.days), summarise, tau = round(mean(indicator), 2), count = length(indicator))
+
+ggplot() + 
+  geom_histogram(data = gov.clean, aes(x = last_major_modification, y = ..density..), color = "white", alpha = 2/3, binwidth = 30*24*60*60) +
+  geom_histogram(data = gov.nomi, aes(x = last_major_modification, y = ..density..), color = "white", fill = "orange", alpha = 2/3, binwidth = 30*24*60*60) +
+  theme(axis.text.y = element_blank())
+ggsave("graphics/gov-last-major-modification-overlay.png", height = 1.7, width = 8, dpi = 100)
+
+### data.table test
+library(data.table)
+GOV <- as.data.table(gov.nomi)
+tables()
+
+GOV[, list(tau = round(mean(indicator), 2), count = length(indicator)), by = freq.days][order(freq.days)]
 
