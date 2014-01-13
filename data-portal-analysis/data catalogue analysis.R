@@ -21,7 +21,7 @@ str(lon)
 
 # Recognise dates
 lon$date.release <- as.Date(paste("01", lon$DDATE), "%d %B %Y")
-lon$metadata <- as.Date(as.Date(lon$METADATA_UPDATE, "%d/%m/%Y"))
+lon$metadata <- as.Date(lon$METADATA_UPDATE, "%d/%m/%Y")
 row.sample(lon, 30)[, "metadata"] # test
   
 # Sort by time
