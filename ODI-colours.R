@@ -1,5 +1,6 @@
 # ODI colour scheme
 # source('~/git/R-projects/ODI-colours.R')
+# TODO: store in some list
 
 odi_dBlue <- "#2254F4"
 odi_mBlue <- "#00B7FF"
@@ -13,3 +14,4 @@ odi_red <- "#D60303"
 odi_lPink <- "#EF3AAB"
 odi_dPink <- "#E6007C"
 odi_purple <- "#B13198"
+
