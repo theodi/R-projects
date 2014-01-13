@@ -84,7 +84,7 @@ p <- ggplot(polls, aes(x = sortdate)) +
   geom_vline(xintercept = as.numeric(max(polls$sortdate)), color = "grey50", size = 0.5) +
   geom_text(data = today, aes(x = max(polls$sortdate), y = today[1, "cons"], label = today[1, "cons"]), hjust = -0.5) +
   geom_text(data = today, aes(x = max(polls$sortdate), y = today[1, "lab"], label = today[1, "lab"]), hjust = -0.5) + 
-  geom_text(data = today, aes(x = max(polls$sortdate), y = today[1, "lib.dem"], label = today[1, "lib.dem"]), hjust = -0.5) +
+  geom_text(data = today, aes(x = max(polls$sortdate), y = today[1, "lib.dem"], label = today[1, "lib.dem"]), hjust = -2) +
   geom_text(data = today, aes(x = max(polls$sortdate), y = today[1, "ukip"], label = today[1, "ukip"]), hjust = -0.5) +
   geom_text(data = today, aes(x = max(polls$sortdate), y = today[1, "others"], label = today[1, "others"]), hjust = -2)
 
