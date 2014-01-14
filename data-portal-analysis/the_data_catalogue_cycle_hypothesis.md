@@ -1,5 +1,7 @@
 # The Data Catalogue Update Hypothesis: Are Datasets Up-to-date?
 
+### This is an obsolete draft. The current paper is under review and will be published at the end of March.
+
 Governments and institutions often publish open data as part of a collection. A minimum requirement for these [data catalogues](http://datacatalogs.o[rg/) are discoverable and up-to-date datasets. We looked at three case studies and found further evidence from an [analysis of Socrata's](http://thomaslevine.com/!/data-updatedness) data catalogues.[^1] 
 
 This matters for several reasons, for example:
