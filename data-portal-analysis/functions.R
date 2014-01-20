@@ -1,4 +1,4 @@
-row.sample <- function(dta, rep) {
+row.sample <- function(dta, rep = 20) {
   dta <- as.data.frame(dta) # for single variables
   dta[sample(1:nrow(dta), rep, replace=FALSE), ] 
 } 
