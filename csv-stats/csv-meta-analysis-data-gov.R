@@ -5,7 +5,9 @@ library(ggplot2)
 library(data.table)
 theme_set(theme_minimal(base_family = "Helvetica Neue"))
 options(stringsAsFactors = FALSE)
+options(RCurlOptions = list(timeout = 5, maxredirs = 1))
 source("~/git/R-projects/data-portal-analysis/functions.r")
+
 
 ### Note to self: I AM USING DATA TABLE
 # data.table is lower case, may not be convention
@@ -23,6 +25,13 @@ table(str_detect(gov$url, "^http"))
 #FALSE  TRUE >> 8 20684
 table(str_detect(gov$url, "^https"))
 #FALSE  TRUE >> 17169  3523
+
+# Create csv only file
+gov.csv <- gov[which(str_detect(gov$url, "csv$")), ]
+
+
+# Size statistics and chart
+
 
 # Now option for data.table's fread
 read.url <- function(url, func = "read.csv", ...){
@@ -49,7 +58,7 @@ for (i in 1819:1820) {
   temp <- try(read.url(gov[i, url], func = "read.csv", nrow = 2, skip = 0),  silent = TRUE)
   if(inherits(temp, "try-error")) tempbool <- 1
   else tempbool <- 0
-  gov[i, error := tempbool]
+  gov[i, error:=tempbool]
   setTxtProgressBar(pb, i)
 }
 close(pb)
@@ -61,5 +70,20 @@ table(gov$error)
 # curl: (56) Recv failure: Connection reset by peer
 # Error in make.names(col.names, unique = TRUE) : invalid multibyte string at '<a3>25K<20>EXPENDITURE APRIL 2013'
 # Redirects [1819] http://www.chre.org.uk/_img/pics/library/Copy_of_101018__CO_guidance_salary_disclosure_mgt_team.csv
+
+# Test whether URL exists
+pb <- txtProgressBar(min = 1, max = nrow(gov.csv), style = 3)
+for (i in 1:nrow(gov.csv)) {
+  temp <- try(url.exists(gov.csv[i, url]))
+  gov.csv[i, exists:=temp]
+  setTxtProgressBar(pb, i)
+  }
+close(pb)
+
+# Percentages
+table(gov$exists)
+formatC( table(gov$exists) / nrow(gov) * 100, digits = 3)
+table(gov.csv$exists)
+formatC( table(gov.csv$exists) / nrow(gov.csv) * 100, digits = 3)
 
 
