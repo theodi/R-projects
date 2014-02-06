@@ -15,6 +15,11 @@ capwords <- function(s, strict = FALSE) {
   sapply(strsplit(s, split = " "), cap, USE.NAMES = !is.null(names(s)))
 }
 
+'%ni%' <- Negate('%in%')
+
 no.missing <- function(x) sum(is.na(x))
 
 count.empty  <- function(x){sum(x == "", na.rm = TRUE)}
+
+count.unique <- function(x) length(unique(x))
+pct.unique <- function(x) as.numeric(formatC(length(unique(x)) * 100 / length(x), format = "fg", digits = 3))
