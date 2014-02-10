@@ -10,7 +10,7 @@ theme_set(theme_minimal(base_family = "Helvetica Neue"))
 options(stringsAsFactors = FALSE)
 
 # -------------------------------
-# London Data Store
+# London DataStore
 #--------------------------------
 lon.full <- read.csv("data/datastore-catalogue.csv", stringsAsFactors = FALSE, na.strings = "")
 lon <- lon.full[, c("TITLE","DDATE", "UPDATE_FREQUENCY", "RELEASE_DATE", "METADATA_UPDATE")]
@@ -171,7 +171,7 @@ wb$Last.Revision.Date[wb$Last.Revision.Date %in% "Current"] <- "01/11/2013"
 
 # Remove rows with missing dates and frequency because some dates are missingly legitimately
 wb <- wb[!is.na(wb$Update.Frequency) | !is.na(wb$Last.Revision.Date), ]
-ddply(wb, .(Update.Frequency), colwise(nmissing))
+ddply(wb, .(Update.Frequency), colwise(no.missing))
 
 # As Dates
 wb$last.revision  <- dmy(wb$Last.Revision.Date)
@@ -251,7 +251,7 @@ round(mean(wb.noup$indicator), 2)
 ddply(wb.noup, .(Update.Frequency), summarise, tau = round(mean(indicator), 2), count = length(indicator))
 
 # -------------------------------
-# UK Data Store
+# UK Datastore
 #--------------------------------
 # Fuck this data dump, so many rogue rows. 
 # Deleted lots of columns, only caused problems
@@ -363,9 +363,9 @@ ggplot() +
 ggsave("graphics/gov-last-major-modification-overlay.png", height = 1.7, width = 8, dpi = 100)
 
 ### data.table test
-library(data.table)
-GOV <- as.data.table(gov.nomi)
-tables()
-
-GOV[, list(tau = round(mean(indicator), 2), count = length(indicator)), by = freq.days][order(freq.days)]
-
+# library(data.table)
+# GOV <- as.data.table(gov.nomi)
+# tables()
+# 
+# GOV[, list(tau = round(mean(indicator), 2), count = length(indicator)), by = freq.days][order(freq.days)]
+# 
