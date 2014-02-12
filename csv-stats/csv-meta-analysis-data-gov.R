@@ -106,7 +106,7 @@ overall.stats <- fread("datawrapper-overall-stats.csv")
 ggplot(data = overall.stats, aes(x = reorder(description, number), y = number)) + 
   geom_bar(stat = 'identity', fill = odi_lGreen, color = "white") + coord_flip() + xlab("") + ylab("") + 
   geom_text(aes(label = number, y = 1000), stat = "identity", color = "white", size = 4) + theme(axis.ticks.y = element_blank())
-ggsave(file="graphics/overall-stats.png", height = 2, width = 8, dpi = 100)
+ggsave(file="graphics/overall-stats.png", height = 1.8, width = 8, dpi = 100)
 
 
 
