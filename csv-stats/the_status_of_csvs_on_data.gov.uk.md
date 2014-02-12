@@ -65,7 +65,7 @@ The following steps create an algorithm that ought to recognise the header row:
 A simple example is below. The first line is the title and the second one is empty. 
    [http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv](http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv)
 
-   ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/missing-header-example.png)
+   ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/miss-header-example.png)
 
 Moreover, it is a good idea to check whether the CSV contains more than one table.
 A. Check whether the header names appear in the respective column again.
