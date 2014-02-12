@@ -55,12 +55,17 @@ We can loosely summarise them by recognising the source of many CSV files: **oft
 A header row in a CSV includes short descriptive names of the data underneath. The header is paramount to get a minimal understanding of the data. Unfortunately, if the header is not in line 1, the machine has to guess where else it might be. This may be a simple task if the first few rows are empty. In many cases, however, the first few lines contain metadata such as the title or the source.
 
 The following steps create an algorithm that ought to recognise the header row:
-1. Discard all empty rows at the beginning.
-2. Find the maximum number of columns for any row (`max.no.col`)
-3. Test whether the header row has an unequal number compared to `max.no.col`
-4. 
 
+1. Find the maximum number of columns for any row (`max.no.col`)
+1. Discard all, if any, empty rows from the beginning to the first non-empty row (`firstrow`) 
+1. Test whether `firstrow` has an equal number compared to `max.no.col`
+1. If the test fails, discard `firstrow` and go to step 2.
+1. If the test passes, use `firstrow` as header row. 
 
+A simple example is below. The first line is the title and the second one is empty. 
+   [http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv](http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv)
+
+   ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/missing-header-example.png)
 
 Moreover, it is a good idea to check whether the CSV contains more than one table.
 A. Check whether the header names appear in the respective column again.
