@@ -23,3 +23,6 @@ count.empty  <- function(x){sum(x == "", na.rm = TRUE)}
 
 count.unique <- function(x) length(unique(x))
 pct.unique <- function(x) as.numeric(formatC(length(unique(x)) * 100 / length(x), format = "fg", digits = 3))
+
+# Show missing data in table as default
+table = function (..., useNA = 'ifany') base::table(..., useNA = useNA)

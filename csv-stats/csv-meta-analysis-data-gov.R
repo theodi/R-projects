@@ -22,10 +22,10 @@ sapply(gov, pct.unique)
 # Count how many csv-files actually have a URL ending in .csv
 table(str_detect(gov$url, "csv$"))
 #FALSE  TRUE >> 3929 16763 
-table(str_detect(gov$url, "^http"))
-#FALSE  TRUE >> 8 20684
-table(str_detect(gov$url, "^https"))
-#FALSE  TRUE >> 17169  3523
+table(str_detect(gov.csv$url, "^http"))
+#FALSE  TRUE >>  4 16759
+table(str_detect(gov.csv$url, "^https"))
+#FALSE  TRUE >> 13594  3169
 
 # Create csv only file
 gov.csv <- gov[which(str_detect(gov$url, "csv$")), ]
@@ -62,7 +62,7 @@ read.url <- function(url, func = "read.csv", ...){
   return(url.data)
 }
 
-# Error with wrong number of skip? (No, suspect only in exceptional circumstances)
+# Error with wrong number of skip? (No, suspect only in exceptional circumstances such as encoding errors)
 read.url(gov[1, url], nrow = 5, skip = 4)
 
 # fread random test - produces better header names
@@ -93,6 +93,20 @@ for (i in 1:nrow(gov.csv.exist)) {
 }
 close(pb)
 
+# curl: (7) Failed connect to www.cafcass.gov.uk - website was down?
+# curl: (7) Failed connect to www.walsallhealthcare.nhs.uk- website was down?
+
 table(gov.csv.exist$error)
+#     0     1 
+# 11609  1219 
+
+#----------------------------
+# More graphics for publication
+overall.stats <- fread("datawrapper-overall-stats.csv")
+ggplot(data = overall.stats, aes(x = reorder(description, number), y = number)) + 
+  geom_bar(stat = 'identity', fill = odi_lGreen, color = "white") + coord_flip() + xlab("") + ylab("") + 
+  geom_text(aes(label = number, y = 1000), stat = "identity", color = "white", size = 4) + theme(axis.ticks.y = element_blank())
+ggsave(file="graphics/overall-stats.png", height = 2, width = 8, dpi = 100)
+
 
 
