@@ -85,8 +85,8 @@ gov.csv.exist <- gov.csv[J(TRUE)]
 # Set silent = FALSE to show error messages.
 # nrow(gov.csv.exist)
 pb <- txtProgressBar(min = 5001, max = nrow(gov.csv.exist), style = 3)
-for (i in 5001:nrow(gov.csv.exist)) {
-  temp <- try(read.url(gov.csv.exist[i, url], func = "fread", nrow = 2, skip = 0),  silent = TRUE)
+for (i in 1:99) {
+  temp <- try(read.url(gov.csv.exist[i, url], func = "fread", nrow = 2, skip = 0), silent = TRUE)
   if(inherits(temp, "try-error")) tempbool <- 1
   else tempbool <- 0
   gov.csv.exist[i, error:=tempbool]
@@ -99,7 +99,7 @@ close(pb)
 
 table(gov.csv.exist$error)
 #     0     1 
-# 11609  1219 
+# 11696  1132 
 
 # ------------------------------
 # Loop over csv URLs reading header names
@@ -107,20 +107,49 @@ table(gov.csv.exist$error)
 setkey(gov.csv.exist, error)
 gov.csv.noerror <- gov.csv.exist[J(0)]
 # Set silent = FALSE to show error messages.
+# Adds file encoding to escape "invalid multibyte string"
 # nrow(gov.csv.noerror)
-pb <- txtProgressBar(min = 0, max = 10, style = 3)
-for (i in 1:10) {
-  temp <- read.url(gov.csv.noerror[i, url], func = "read.csv", nrow = 12, skip = 0)
+pb <- txtProgressBar(min = 5001, max = nrow(gov.csv.noerror), style = 3)
+for (i in 5001:nrow(gov.csv.noerror)) {
+  temp <- try(read.url(gov.csv.noerror[i, url], func = "read.csv", nrow = 12, skip = 0, fileEncoding="latin1"), silent = FALSE)
   dat.names <- names(temp)
-  if (str_detect(tail(dat.names, 1), "^X")) tempbool <- 1
-  else tempbool <- 0
-  gov.csv.noerror[i, last.header:=tail(dat.names, 1)]
-  gov.csv.noerror[i, header.reg:=tempbool]
+  if (!is.null(dat.names)) {
+    tempboolnull <- 0
+    if (str_detect(tail(dat.names, 1), "^X")) tempbool <- 1
+    else tempbool <- 0
+    gov.csv.noerror[i, last.header:=tail(dat.names, 1)]
+    gov.csv.noerror[i, header.reg:=tempbool]
+  }
+  else tempboolnull <- 1
+  gov.csv.noerror[i, no.names:=tempboolnull]
   setTxtProgressBar(pb, i)
 }
 close(pb)
 
+# 41-44 more columns than column names
+# Warnings: incomplete final line found by readTableHeader
+
 table(gov.csv.noerror$header)
+table(gov.csv.noerror$no.names)
+
+# Some broken CSVs are still sometimes included. Filter if last.header is too long
+gov.csv.noerror[, flag.broken:=0]
+gov.csv.noerror[nchar(last.header) > 100, flag.broken:=1]
+
+table(gov.csv.noerror$flag.broken, gov.csv.noerror$header.reg)
+
+gov.csv.noerror[, not.machine:=header.reg]
+gov.csv.noerror[flag.broken == 1, not.machine:=1]
+gov.csv.noerror[is.na(header.reg), not.machine:=1]
+
+table(gov.csv.noerror$not.machine)
+
+# ------------------------------
+# Finally MACHINE-READABLE CSVs?
+setkey(gov.csv.noerror, not.machine)
+gov.csv.machine <- gov.csv.noerror[J(0)]
+
+# Must try set(), see ?":=" 
 
 
 #----------------------------
@@ -132,5 +161,4 @@ ggplot(data = overall.stats, aes(x = reorder(description, number), y = number)) 
 ggsave(file="graphics/overall-stats.png", height = 1.8, width = 8, dpi = 100)
 
 
-
-
+read.url(gov.csv.noerror[42, url], func = "read.csv", nrow = 5, skip = 0, fileEncoding="latin1", comment.char="")
