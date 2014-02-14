@@ -83,8 +83,9 @@ names(read.url(gov[1819, url], func = "fread", nrows = 5))
 setkey(gov.csv, exists)
 gov.csv.exist <- gov.csv[J(TRUE)]
 # Set silent = FALSE to show error messages.
-pb <- txtProgressBar(min = 0, max = nrow(gov.csv.exist), style = 3)
-for (i in 1:nrow(gov.csv.exist)) {
+# nrow(gov.csv.exist)
+pb <- txtProgressBar(min = 5001, max = nrow(gov.csv.exist), style = 3)
+for (i in 5001:nrow(gov.csv.exist)) {
   temp <- try(read.url(gov.csv.exist[i, url], func = "fread", nrow = 2, skip = 0),  silent = TRUE)
   if(inherits(temp, "try-error")) tempbool <- 1
   else tempbool <- 0
@@ -100,6 +101,28 @@ table(gov.csv.exist$error)
 #     0     1 
 # 11609  1219 
 
+# ------------------------------
+# Loop over csv URLs reading header names
+# If a header name is empty it will start with X
+setkey(gov.csv.exist, error)
+gov.csv.noerror <- gov.csv.exist[J(0)]
+# Set silent = FALSE to show error messages.
+# nrow(gov.csv.noerror)
+pb <- txtProgressBar(min = 0, max = 10, style = 3)
+for (i in 1:10) {
+  temp <- read.url(gov.csv.noerror[i, url], func = "read.csv", nrow = 12, skip = 0)
+  dat.names <- names(temp)
+  if (str_detect(tail(dat.names, 1), "^X")) tempbool <- 1
+  else tempbool <- 0
+  gov.csv.noerror[i, last.header:=tail(dat.names, 1)]
+  gov.csv.noerror[i, header.reg:=tempbool]
+  setTxtProgressBar(pb, i)
+}
+close(pb)
+
+table(gov.csv.noerror$header)
+
+
 #----------------------------
 # More graphics for publication
 overall.stats <- fread("datawrapper-overall-stats.csv")
@@ -107,6 +130,7 @@ ggplot(data = overall.stats, aes(x = reorder(description, number), y = number)) 
   geom_bar(stat = 'identity', fill = odi_lGreen, color = "white") + coord_flip() + xlab("") + ylab("") + 
   geom_text(aes(label = number, y = 1000), stat = "identity", color = "white", size = 4) + theme(axis.ticks.y = element_blank())
 ggsave(file="graphics/overall-stats.png", height = 1.8, width = 8, dpi = 100)
+
 
 
 
