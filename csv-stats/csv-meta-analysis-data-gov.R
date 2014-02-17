@@ -78,6 +78,8 @@ names(read.url(gov[1819, url], func = "fread", nrows = 5))
 # Redirects [1819] http://www.chre.org.uk/_img/pics/library/Copy_of_101018__CO_guidance_salary_disclosure_mgt_team.csv
 
 # ------------------------------
+# Must try set(), see ?":="
+
 # Loop over csv URLs while trying to count the errors
 # Filter out unresponsive URLs
 setkey(gov.csv, exists)
@@ -149,7 +151,19 @@ table(gov.csv.noerror$not.machine)
 setkey(gov.csv.noerror, not.machine)
 gov.csv.machine <- gov.csv.noerror[J(0)]
 
-# Must try set(), see ?":=" 
+# Loop over CSVs that collects all header names in a single list
+# nrow(gov.csv.machine)
+header.names <- list()
+pb <- txtProgressBar(min = 1, max = nrow(gov.csv.machine), style = 3)
+for (i in 1:nrow(gov.csv.machine)) {
+  temp <- try(read.url(gov.csv.machine[i, url], func = "fread", nrow = 1, skip = 0), silent = FALSE)
+  temp.list <- as.list(names(temp))
+  header.names[[length(header.names) + 1]] <- temp.list
+  setTxtProgressBar(pb, i)
+}
+close(pb)
+
+sum(str_count(unlist(header.names), "Date"))
 
 
 #----------------------------
