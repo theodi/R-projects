@@ -162,8 +162,31 @@ for (i in 1:nrow(gov.csv.machine)) {
   setTxtProgressBar(pb, i)
 }
 close(pb)
+rm(list = c("temp", "i", "temp.list"))
 
-sum(str_count(unlist(header.names), "Date"))
+# Count various header names
+unique.headers <- lapply(header.names, unique)
+flat.headers <- unlist(unique.headers, use.names = FALSE)
+
+# Export for open refine
+write.csv(flat.headers, "csv-headers.csv")
+# Clean LOADS of headers
+# Re-import
+clean.headers <- read.csv("csv-headers-clean.csv")
+clean.headers  <- unlist(clean.headers[, -1])
+
+header.table <- sort(table(clean.headers), decreasing = TRUE)
+head(header.table, n = 20)
+
+write.csv(header.table, "header-counts-clean.csv")
+
+# Some header stats
+summary(sapply(header.names, length))
+header.length <- sapply(header.names, length)
+
+ggplot(as.data.frame(header.length), aes(x = header.length)) + geom_histogram(color = "white", fill = odi_turquoise) + 
+  scale_x_log10() + geom_text(data = as.data.frame(mode.stat(header.length)), x = 0.5, y = 1800, label = "Mode = 8")
+ggsave("graphics/header-length-histogram.png", height = 2, width = 8, dpi = 100)
 
 
 #----------------------------
@@ -176,3 +199,8 @@ ggsave(file="graphics/overall-stats.png", height = 1.8, width = 8, dpi = 100)
 
 
 read.url(gov.csv.noerror[42, url], func = "read.csv", nrow = 5, skip = 0, fileEncoding="latin1", comment.char="")
+
+
+# Stackoverflow repro example
+list(list("Post Unique Reference", "Name", "Grade (or equivalent)", "Job Title", "Date", "Date added"), 
+     list("Parent Department", "Organisation", "Unit", "Reporting Senior Post", "Grade", "Date"))
