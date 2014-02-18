@@ -75,6 +75,20 @@ After much experimentation we managed to automatically read 7,390 CSV-files. All
 
 ![header-length](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/header-length-histogram.png)
 
+What are the most popular header names? We had to clean up a lot of the names because in its raw format, you'll get "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we get the following table.
+
+<table> class="table offers table-horizontally-condensed”>
+ <tr><td>Expense Type</td><td>3,144</td></tr>
+ <tr><td>Entity</td><td>3,039</td></tr>
+ <tr><td>Expense Area</td><td>3,029</td></tr>
+ <tr><td>Supplier</td><td>2,889</td></tr>
+ <tr><td>Date</td><td>2,820</td></tr>
+ <tr><td>Transaction Number</td><td>2,791</td></tr>
+ <tr><td>Amount</td><td>2,734</td></tr>
+ <tr><td>Department Family</td><td>2,498</td></tr>
+ <tr><td>VAT Registration Number</td><td>916</td></tr>
+ <tr><td>Convictions Percentage</td><td>836</td></tr>
+</table>
 
 
 
