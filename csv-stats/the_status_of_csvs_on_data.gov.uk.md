@@ -2,9 +2,8 @@
 
 In January 2014 we created a file that contains all CSVs published on [data.gov.uk](http://data.gov.uk). It's a simple file that mainly lists all the URLs on data.gov.uk that are classified as data in a CSV format. 
 
-rantirat 
-class="table offers table-horizontally-condensed”
-<table >
+ 
+<table> class="table offers table-horizontally-condensed”>
   <tr>
     <td>dataset</td>
     <td>Usually title and publisher</td>
@@ -40,12 +39,12 @@ The vast majority of CSV files is between 1 kb and 1 mb in size.
 
 There are numerous problems that prohibit importing, or even reading, a CSV file with a machine. 
 
-1. Not available, for example because the link changed, the website is down.
-2. Errors that may be circumvented such as `# curl: (60) SSL certificate problem: Invalid certificate chain`
+1. Not available, for example because the link changed or the website is down.
+2. Errors that can be circumvented such as `# curl: (60) SSL certificate problem: Invalid certificate chain`
 3. Non-standard symbols that are not recognised. For example, an `invalid multibyte string` or erroneous line ending.
 4. Files where the header row is not in line 1 or not specified. More in the next section.
 5. Multiple tables in one file
-6. And many, many more.
+6. And many more.
 
 We can loosely summarise them by recognising the source of many CSV files: **often a direct copy of an Excel sheet**. An Excel sheet, optimised to be read by humans. 
 
@@ -68,8 +67,13 @@ A simple example is below. The first line is the title and the second one is emp
    ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/miss-header-example.png)
 
 Moreover, it is a good idea to check whether the CSV contains more than one table.
-A. Check whether the header names appear in the respective column again.
 
+
+## Headers and schemas
+
+After much experimentation we managed to automatically read 7,390 CSV-files. All of them have of course header names that can be analysed. For example, we see that a typical size of an CSV-file on data.gov.uk has eight columns.
+
+![header-length](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/header-length-histogram.png)
 
 
 

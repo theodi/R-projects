@@ -193,14 +193,9 @@ ggsave("graphics/header-length-histogram.png", height = 2, width = 8, dpi = 100)
 # More graphics for publication
 overall.stats <- fread("datawrapper-overall-stats.csv")
 ggplot(data = overall.stats, aes(x = reorder(description, number), y = number)) + 
-  geom_bar(stat = 'identity', fill = odi_lGreen, color = "white") + coord_flip() + xlab("") + ylab("") + 
+  geom_bar(stat = 'identity', fill = odi_turquoise, color = "white") + coord_flip() + xlab("") + ylab("") + 
   geom_text(aes(label = number, y = 1000), stat = "identity", color = "white", size = 4) + theme(axis.ticks.y = element_blank())
-ggsave(file="graphics/overall-stats.png", height = 1.8, width = 8, dpi = 100)
+ggsave(file="graphics/overall-stats.png", height = 2, width = 8, dpi = 100)
 
 
 read.url(gov.csv.noerror[42, url], func = "read.csv", nrow = 5, skip = 0, fileEncoding="latin1", comment.char="")
-
-
-# Stackoverflow repro example
-list(list("Post Unique Reference", "Name", "Grade (or equivalent)", "Job Title", "Date", "Date added"), 
-     list("Parent Department", "Organisation", "Unit", "Reporting Senior Post", "Grade", "Date"))
