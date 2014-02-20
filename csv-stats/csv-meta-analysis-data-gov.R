@@ -32,7 +32,7 @@ gov.csv <- gov[which(str_detect(gov$url, "csv$")), ]
 
 # Size statistics and chart
 summary(gov.csv$size)
-ggplot(data = gov.csv, aes(x = size/1000)) + geom_histogram(fill = odi_lGreen, color = "white") + 
+ggplot(data = gov.csv, aes(x = size/1000)) + geom_histogram(fill = odi_turquoise, color = "white") + 
   scale_x_log10(labels = comma) + xlab("Size in kb") +
   theme(axis.title.x = element_text(hjust = 0.4))
 ggsave(file="graphics/histogram-size-of-csvs.png", height = 2, width = 8, dpi = 100)
@@ -184,8 +184,8 @@ write.csv(header.table, "header-counts-clean.csv")
 summary(sapply(header.names, length))
 header.length <- sapply(header.names, length)
 
-ggplot(as.data.frame(header.length), aes(x = header.length)) + geom_histogram(color = "white", fill = odi_turquoise) + 
-  scale_x_log10() + geom_text(data = as.data.frame(mode.stat(header.length)), x = 0.5, y = 1800, label = "Mode = 8")
+ggplot(as.data.frame(header.length), aes(x = header.length)) + geom_histogram(binwidth = 0.05, color = "white", fill = odi_turquoise) + 
+  scale_x_log10() + geom_text(data = as.data.frame(mode.stat(header.length)), x = 0.5, y = 1250, label = "Mode = 8")
 ggsave("graphics/header-length-histogram.png", height = 2, width = 8, dpi = 100)
 
 
