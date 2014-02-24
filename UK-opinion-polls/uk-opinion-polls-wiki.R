@@ -78,7 +78,7 @@ p <- ggplot(polls, aes(x = sortdate)) +
   annotate("text", x = as.Date("2011-07-01"), y = 32, label = "Conservatives", size = 5, color = "blue") + 
   annotate("text", x = as.Date("2012-01-01"), y = 45, label = "Labour", size = 5, color = "red") + 
   annotate("text", x = as.Date("2011-02-01"), y = 15, label = "Liberal Democrats", size = 5, color = "darkorange") +
-  annotate("text", x = as.Date("2013-02-01"), y = 15, label = "UKIP", size = 5, color = "purple") + 
+  annotate("text", x = as.Date("2013-02-01"), y = 20, label = "UKIP", size = 5, color = "purple") + 
   annotate("text", x = as.Date("2010-07-01"), y = 9, label = "Other", size = 5, color = "grey50") +
   geom_vline(xintercept = as.numeric(max(polls$sortdate)), color = "grey50", size = 0.5) +
   geom_text(data = today, aes(x = max(polls$sortdate), y = today[1, "cons"], label = today[1, "cons"]), hjust = -0.5) +
@@ -89,10 +89,10 @@ p <- ggplot(polls, aes(x = sortdate)) +
 
 p
 
-ggsave("graphics/trends.pdf")
-ggsave("graphics/trends.png")
+ggsave("graphics/trends.pdf", height = 5, width = 8, dpi = 100)
+ggsave("graphics/trends.png", height = 5, width = 8, dpi = 100)
 
-write.csv(polls, "UK-opinion-polls.csv", row.names = FALSE, fileEncoding = "macroman")
+write.csv(polls, "UK-opinion-polls.csv", row.names = FALSE, fileEncoding = "UTF-8")
 
 # Don't encode images
 knit2html("tutorial.Rmd", options=c("use_xhtml","smartypants","mathjax","highlight_code"))
