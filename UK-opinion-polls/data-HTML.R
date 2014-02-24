@@ -1,8 +1,8 @@
 setwd("~/git/R-projects/UK-opinion-polls")
-library(XML)
-library(stringr)
-library(ggplot2)
-theme_set(theme_minimal())
+pacs <- c("stringr", "ggplot2", "XML")
+sapply(pacs, require, character.only = TRUE)
+theme_set(theme_minimal(base_family = "Helvetica Neue"))
+options(stringsAsFactors = FALSE)
 url <-  "http://en.wikipedia.org/wiki/Opinion_polling_for_the_next_United_Kingdom_general_election"
 
 # Need clean names function
@@ -13,7 +13,6 @@ clean.names <- function(x) {
   y <- tolower(y)
   return(y)
 }
-
 
 # Extract date from range for sorting
 # Such a mess to find the right "-" symbol 
