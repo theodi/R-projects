@@ -89,8 +89,8 @@ p <- ggplot(polls, aes(x = sortdate)) +
 
 p
 
-ggsave("trends.pdf")
-ggsave("trends.png")
+ggsave("graphics/trends.pdf")
+ggsave("graphics/trends.png")
 
 write.csv(polls, "UK-opinion-polls.csv", row.names = FALSE, fileEncoding = "macroman")
 
