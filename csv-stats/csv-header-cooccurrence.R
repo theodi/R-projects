@@ -19,15 +19,21 @@ tail(coocc, n = 50)
 write.csv(coocc, "co-occurrence/csv-coocc-out.csv")
 # Clean LOADS of headers
 # Re-import
-coocc.clean <- read.csv("co-occurrence/csv-coocc-clean.csv")
+coocc.clean <- read.csv("co-occurrence/csv-coocc-clean.csv", stringsAsFactors = FALSE)
 
-# Drop all idiosyncratic headers here...
+# Remove duplicates
+coocc.clean <- unique(coocc.clean)
+
+# Only keep the top header names
+top.headers <- names(header.table[1:50])
+coocc.clean.top <- coocc.clean[which(coocc.clean$header %in% top.headers), ]
+
 
 
 # Create matrix of header co-occurrence
 # http://stackoverflow.com/questions/13281303/creating-co-occurrence-matrix
-coocc.molt <- melt(coocc.clean)
-w <- dcast(row.sample(coocc.molt, 1000), header ~ value)
+coocc.molt <- melt(coocc.clean.top)
+w <- dcast(coocc.molt, header ~ value) # row.sample for testing
 x <- as.matrix(w[, -1])
 x[is.na(x)] <- 0
 x <- apply(x, 2,  function(x) as.numeric(x > 0))  #recode as 0/1
@@ -47,5 +53,5 @@ g <- graph.adjacency(v, weighted = TRUE, mode = 'undirected')
 g <- simplify(g)
 gephi.gr <- graph.data.frame(g, directed = FALSE);
 
-# Write sender -> receiver information to a GraphML file
+# Write to a GraphML file
 write.graph(g, file = "co-occurrence/header-coocc.graphml", format = "graphml")
