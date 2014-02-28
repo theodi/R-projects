@@ -36,10 +36,10 @@ coocc.molt <- melt(coocc.clean.top)
 w <- dcast(coocc.molt, header ~ value) # row.sample for testing
 x <- as.matrix(w[, -1])
 x[is.na(x)] <- 0
-x <- apply(x, 2,  function(x) as.numeric(x > 0))  #recode as 0/1
-v <- x %*% t(x)                                   #the magic matrix 
-diag(v) <- 0                                      #replace diagonal
-dimnames(v) <- list(w[, 1], w[,1])                #name the dimensions
+x <- apply(x, 2,  function(x) as.numeric(x > 0))  # recode as 0/1
+v <- x %*% t(x)                                   # the magic matrix 
+diag(v) <- 0                                      # replace diagonal
+dimnames(v) <- list(w[, 1], w[, 1])               # name the dimensions
 
 # Get rid of all empty rows or columns
 gephi <- v[rowSums(v) != 0, ]
@@ -51,7 +51,7 @@ write.csv(gephi, "co-occurrence/header-coocc.csv")
 # Transform dataframe into a graph
 g <- graph.adjacency(v, weighted = TRUE, mode = 'undirected')
 g <- simplify(g)
-gephi.gr <- graph.data.frame(g, directed = FALSE);
+plot(g)
 
 # Write to a GraphML file
 write.graph(g, file = "co-occurrence/header-coocc.graphml", format = "graphml")
