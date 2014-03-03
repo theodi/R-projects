@@ -34,7 +34,7 @@ gov.csv <- gov[which(str_detect(gov$url, "csv$")), ]
 summary(gov.csv$size)
 ggplot(data = gov.csv, aes(x = size/1000)) + geom_histogram(fill = odi_turquoise, color = "white") + 
   scale_x_log10(labels = comma) + xlab("Size in kb") +
-  theme(axis.title.x = element_text(hjust = 0.4))
+  theme(axis.title.x = element_text(hjust = 0.4), axis.text = element_text(size=14), axis.title = element_text(size=14))
 ggsave(file="graphics/histogram-size-of-csvs.png", height = 2, width = 8, dpi = 100)
 
 # Test whether URL exists

@@ -1,9 +1,18 @@
-# The status of CSVs on data.gov.uk
+# What is a CSV? A case study of CSV files on data.gov.uk
+
+
+## Abstract
+
+CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. Our analysis of the headers of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spent records. Other departments such as the Crown Prosecution Service also releases vast amounts of CSVs, usually split by month and type.
+
+
+
+## Data
 
 In January 2014 we created a file that contains all CSVs published on [data.gov.uk](http://data.gov.uk). It's a simple file that mainly lists all the URLs on data.gov.uk that are classified as data in a CSV format. 
 
  
-<table> class="table offers table-horizontally-condensed”>
+<table class="table offers table-horizontally-condensed">
   <tr>
     <td>dataset</td>
     <td>Usually title and publisher</td>
@@ -22,10 +31,12 @@ In January 2014 we created a file that contains all CSVs published on [data.gov.
   </tr>
 </table>
 
-3169 (19%) are served over a secure connection, i.e. `https`.
-
-
 ![overall-stats](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/overall-stats.png)
+
+Of all the CSVs listed via the API, 3169 (19%) are served over a secure connection, i.e. `https`.
+
+What is going on? One simple explanation is that many CSV files were not 
+
 
 
 ## Size 
@@ -75,9 +86,9 @@ After much experimentation we managed to automatically read 7,390 CSV-files. All
 
 ![header-length](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/header-length-histogram.png)
 
-What are the most popular header names? We had to clean up a lot of the names because in its raw format, you'll get "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we get the following table.
+What are the most popular header names? We had to clean up a lot of the names because in its raw format, you'll get "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we get the following table. They may not be representative overall because only the machine-readable CSVs feature, but show how common certain data types are.
 
-<table> class="table offers table-horizontally-condensed”>
+<table class="table offers table-horizontally-condensed">
  <tr><td>Expense Type</td><td>3,144</td></tr>
  <tr><td>Entity</td><td>3,039</td></tr>
  <tr><td>Expense Area</td><td>3,029</td></tr>
@@ -89,6 +100,13 @@ What are the most popular header names? We had to clean up a lot of the names be
  <tr><td>VAT Registration Number</td><td>916</td></tr>
  <tr><td>Convictions Percentage</td><td>836</td></tr>
 </table>
+
+The whole analysis is of course on [GitHub](https://github.com/theodi/R-projects/blob/master/csv-stats/csv-meta-analysis-data-gov.R).
+
+
+
+![header-map](https://raw.github.com/theodi/R-projects/master/csv-stats/co-occurrence/top-headers-coocc.png)
+
 
 
 
