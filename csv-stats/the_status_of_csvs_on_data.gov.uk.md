@@ -40,15 +40,28 @@ Figure 1 shows how the overall number of 20,692 dwindles to 7390:
 
 2. Of the URLs that do end in `.csv`, around 4,000 yield an error. For example, some files that detail the [Crossrail Spend 2013](http://www.crossrail.co.uk/assets/library/document/c/original/crossrail_payments_period_13_2012-13.csv) are no longer available. 
 
-3. Even if the CSV exists, it loses some of its value if we cannot read it automatically. Standards are hence important. An example of what did **not** get parsed is below. The first line is the title and the second one is empty. 
-   [http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv](http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv)
+3. Even if the CSV exists, it loses some of its value if we cannot read it automatically. Standards are hence important. An example of what did **not** get parsed is below. The first line is the title and the second one is empty (from [here](http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv)).
 
    ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/miss-header-example.png)
 
 
 As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
 
-Statistics on football banning orders	
+
+## A CSV is not an Excel sheet with a different extension
+
+What is going on? One simple explanation is that data.gov.uk combines many different publishers. All  of them have their own quality and update schedule. In fact, we suspect most of them have not implemented an automated process that would make publication of CSVs easier and more reliable. 
+
+We can summarise the problems by recognising the source of many CSV files: **often a direct copy of an Excel sheet**. Excel sheets are optimised to be read by humans. They usually provide rich metadata, related information, and nice formatting. However, Excel files are difficult to process because each one might be unique. Therefore, saving a `xlsx` file with a `csv` extension, as we observe, cannot be the solution. It is, in fact, the reason for many of the issues we encountered. 
+
+There are numerous problems that prohibit importing, or even reading, a CSV file with a machine. 
+
+1. Not available, for example because the link changed or the website is down.
+2. Errors that can be circumvented such as SSL certificate warnings
+3. Non-standard symbols that are not recognised. For example, an `invalid multibyte string` or erroneous line ending.
+4. Files where the header row is not in line 1 or not specified. More in the next section.
+5. Multiple tables in one file
+6. And many more.
 
 
 
@@ -56,23 +69,8 @@ Statistics on football banning orders
 
 The vast majority of CSV files is between 1 kb and 1 mb in size. 
 
+##### Figure 2. Histogram of the size of CSVs
 ![size-histogram](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/histogram-size-of-csvs.png)
-
-
-## Problems
-
-What is going on? One simple explanation is that many CSV files were not 
-
-There are numerous problems that prohibit importing, or even reading, a CSV file with a machine. 
-
-1. Not available, for example because the link changed or the website is down.
-2. Errors that can be circumvented such as `# curl: (60) SSL certificate problem: Invalid certificate chain`
-3. Non-standard symbols that are not recognised. For example, an `invalid multibyte string` or erroneous line ending.
-4. Files where the header row is not in line 1 or not specified. More in the next section.
-5. Multiple tables in one file
-6. And many more.
-
-We can loosely summarise them by recognising the source of many CSV files: **often a direct copy of an Excel sheet**. An Excel sheet, optimised to be read by humans. 
 
 
 ## Automatically recognising a header row
@@ -116,15 +114,16 @@ What are the most popular header names? We had to clean up a lot of the names be
 The whole analysis is of course on [GitHub](https://github.com/theodi/R-projects/blob/master/csv-stats/csv-meta-analysis-data-gov.R).
 
 
-
+##### Figure 4. Co-occurrence of header names
 ![header-map](https://raw.github.com/theodi/R-projects/master/csv-stats/co-occurrence/top-headers-coocc.png)
 
+We took the 50 most popular header names and calculated how often they each appear together. The lines' thickness stands for the frequency of how often they appear together. For example, *Payscale Minimum* and *Payscale Maximum* are next to each other, which makes sense. A generic header name *Unit* appears in many files and has therefore stronger links to various others.
 
+The most common cluster is around *Expense Type* because many files document government spending. A typical "Spend over £25,000" CSV is very likely to have similar headers than listed in the previous table. 
 
+We also see an independent cluster around prosecutions. For example, the Crown Prosecution Service releases a lot of individual CSVs, which increases how many times they appear in our header analysis. 
 
-Spend over £25,000
-Crown prosecution
-
+##
 
 
 
