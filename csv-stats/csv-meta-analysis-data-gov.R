@@ -192,10 +192,10 @@ ggsave("graphics/header-length-histogram.png", height = 2, width = 8, dpi = 100)
 #----------------------------
 # More graphics for publication
 overall.stats <- fread("datawrapper-overall-stats.csv")
-ggplot(data = overall.stats, aes(x = reorder(description, number), y = number)) + 
+ggplot(data = overall.stats[-4, ], aes(x = reorder(description, number), y = number)) + 
   geom_bar(stat = 'identity', fill = odi_turquoise, color = "white") + coord_flip() + xlab("") + ylab("") + 
-  geom_text(aes(label = number, y = 1000), stat = "identity", color = "white", size = 4) + theme(axis.ticks.y = element_blank())
-ggsave(file="graphics/overall-stats.png", height = 2, width = 8, dpi = 100)
+  geom_text(aes(label = number, y = 1100), stat = "identity", color = "white", size = 4) + theme(axis.ticks.y = element_blank())
+ggsave(file="graphics/overall-stats.png", height = 2, width = 7, dpi = 100)
 
 
 read.url(gov.csv.noerror[42, url], func = "read.csv", nrow = 5, skip = 0, fileEncoding="latin1", comment.char="")
