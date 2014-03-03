@@ -117,13 +117,15 @@ The whole analysis is of course on [GitHub](https://github.com/theodi/R-projects
 ##### Figure 4. Co-occurrence of header names
 ![header-map](https://raw.github.com/theodi/R-projects/master/csv-stats/co-occurrence/top-headers-coocc.png)
 
-We took the 50 most popular header names and calculated how often they each appear together. The lines' thickness stands for the frequency of how often they appear together. For example, *Payscale Minimum* and *Payscale Maximum* are next to each other, which makes sense. A generic header name *Unit* appears in many files and has therefore stronger links to various others.
+We took the 50 most popular header names and calculated how often they each appear together. The lines' thickness stands for the frequency of their co-occurence. For example, as we would expect, *Payscale Minimum* and *Payscale Maximum* are next to each other. A generic header name such as *Unit* appears in many files and has therefore stronger links to various others.
 
-The most common cluster is around *Expense Type* because many files document government spending. A typical "Spend over £25,000" CSV is very likely to have similar headers than listed in the previous table. 
+The most common cluster is around *Expense Type* because many files document government spending. A typical "Spend over £25,000" CSV is very likely to have similar headers as listed in the previous table. 
 
 We also see an independent cluster around prosecutions. For example, the Crown Prosecution Service releases a lot of individual CSVs, which increases how many times they appear in our header analysis. 
 
-##
+## Further research
+
+
 
 
 
