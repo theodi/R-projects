@@ -7,9 +7,9 @@ CSV stands for *comma-separated values*. It is a simple format for tabular data 
 
 
 
-## Data
+## Metadata
 
-In January 2014 we created a file that contains all CSVs published on [data.gov.uk](http://data.gov.uk). It's a simple file that mainly lists all the URLs on data.gov.uk that are classified as data in a CSV format. 
+In January 2014 we created a file that contains all CSVs published on [data.gov.uk](http://data.gov.uk). [STUART TO ADD A SENTENCE ON HOW] The result is a simple file that mainly lists all the URLs on data.gov.uk that are classified as data in a CSV format. 
 
  
 <table class="table offers table-horizontally-condensed">
@@ -31,11 +31,23 @@ In January 2014 we created a file that contains all CSVs published on [data.gov.
   </tr>
 </table>
 
+##### Figure 1. Number of valid CSVs on data.gov.uk
 ![overall-stats](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/overall-stats.png)
 
-Of all the CSVs listed via the API, 3169 (19%) are served over a secure connection, i.e. `https`.
+Figure 1 shows how the overall number of 20,692 dwindles to 7390:
 
-What is going on? One simple explanation is that many CSV files were not 
+1. Almost 4,000 URLs are not CSVs and link to other files or just web pages. 
+
+2. Of the URLs that do end in `.csv`, around 4,000 yield an error. For example, some files that detail the [Crossrail Spend 2013](http://www.crossrail.co.uk/assets/library/document/c/original/crossrail_payments_period_13_2012-13.csv) are no longer available. 
+3. Even if the CSV exists, it loses some of its value if we cannot read it automatically. Standards are hence important. An example of what did **not** get parsed is below. The first line is the title and the second one is empty. 
+   [http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv](http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv)
+
+   ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/miss-header-example.png)
+
+
+As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
+
+
 
 
 
@@ -47,6 +59,8 @@ The vast majority of CSV files is between 1 kb and 1 mb in size.
 
 
 ## Problems
+
+What is going on? One simple explanation is that many CSV files were not 
 
 There are numerous problems that prohibit importing, or even reading, a CSV file with a machine. 
 
@@ -72,10 +86,7 @@ The following steps create an algorithm that ought to recognise the header row:
 1. If the test fails, discard `firstrow` and go to step 2.
 1. If the test passes, use `firstrow` as header row. 
 
-A simple example is below. The first line is the title and the second one is empty. 
-   [http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv](http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv)
 
-   ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/miss-header-example.png)
 
 Moreover, it is a good idea to check whether the CSV contains more than one table.
 
