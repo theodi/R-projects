@@ -3,7 +3,7 @@
 
 ## Abstract
 
-CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. Our analysis of the headers of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spent records. Other departments such as the Crown Prosecution Service also releases vast amounts of CSVs, usually split by month and type.
+CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. Our analysis of the headers of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spent records, usually split by month and type. Other departments such as the Crown Prosecution Service also releases vast amounts of CSVs.
 
 
 
@@ -36,8 +36,7 @@ In January 2014 we created a file that contains all CSVs published on [data.gov.
 
 Figure 1 shows how the overall number of 20,692 dwindles to 7390:
 
-1. Almost 4,000 URLs are not CSVs and link to other files or just web pages. 
-
+1. Almost 4,000 URLs are not CSVs and link to other files, web pages or resolve in some download link. Some of them may be valid, but many links don't work, for example [http://www.roh.nhs.uk/EasySiteWeb/GatewayLink.aspx?alId=1763](http://www.roh.nhs.uk/EasySiteWeb/GatewayLink.aspx?alId=1763).
 2. Of the URLs that do end in `.csv`, around 4,000 yield an error. For example, some files that detail the [Crossrail Spend 2013](http://www.crossrail.co.uk/assets/library/document/c/original/crossrail_payments_period_13_2012-13.csv) are no longer available. 
 3. Even if the CSV exists, it loses some of its value if we cannot read it automatically. Standards are hence important. An example of what did **not** get parsed is below. The first line is the title and the second one is empty. 
    [http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv](http://www.royalwolverhamptonhospitals.nhs.uk/files/mth%206%20september%202013%20(3).csv)
@@ -47,7 +46,7 @@ Figure 1 shows how the overall number of 20,692 dwindles to 7390:
 
 As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
 
-
+Statistics on football banning orders	
 
 
 
