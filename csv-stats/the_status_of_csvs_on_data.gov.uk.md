@@ -5,7 +5,7 @@
 
 CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. A typical CSV is between 1kb-1mb in size and has around eight columns.
 
-Our analysis of the header names of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spend records, usually split by month and type. Other organisations such as the Crown Prosecution Service also release vast amounts of CSVs. If publishers embrace standards for CSV data releases, we see a great potential such as aggregate analyses.
+Our analysis of the header names of 7,390 machine-readable CSVs suggests that there are clear patterns. The most common type are spend records, usually split by month and type. Other organisations such as the Crown Prosecution Service also release vast amounts of CSVs. If publishers embrace standards for CSV data releases, we see a great potential such as aggregate analyses.
 
 
 
@@ -36,7 +36,7 @@ In January 2014 we created a file that contains all CSVs published on [data.gov.
 ##### Figure 1. Number of valid CSVs on data.gov.uk
 ![overall-stats](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/overall-stats.png)
 
-Figure 1 shows how the overall number of 20,692 dwindles to 7390:
+Figure 1 shows how the overall number of 20,692 dwindles to 7,390:
 
 1. Almost 4,000 URLs are not CSVs and link to other files, web pages or resolve in some download link. Some of them may be valid, but many links don't work, for example [this URL](http://www.roh.nhs.uk/EasySiteWeb/GatewayLink.aspx?alId=1763).
 
