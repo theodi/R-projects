@@ -77,7 +77,7 @@ The vast majority of CSV files is between 1 kb and 1 mb in size.
 
 A header row in a CSV includes short descriptive names of the data underneath. The header is paramount to get a minimal understanding of the data. Unfortunately, if the header is not in line 1, the machine has to guess where else it might be. This may be a simple task if the first few rows are empty. In many cases, however, the first few lines contain metadata such as the title or the source.
 
-The following steps create an algorithm that ought to recognise the header row:
+The following steps create an algorithm that has a good chance of recognising the header row:
 
 1. Find the maximum number of columns for any row (`max.no.col`)
 1. Discard all, if any, empty rows from the beginning to the first non-empty row (`firstrow`) 
@@ -85,14 +85,12 @@ The following steps create an algorithm that ought to recognise the header row:
 1. If the test fails, discard `firstrow` and go to step 2.
 1. If the test passes, use `firstrow` as header row. 
 
-
-
 Moreover, it is a good idea to check whether the CSV contains more than one table.
 
 
 ## Headers and schemas
 
-After much experimentation we managed to automatically read 7,390 CSV-files. All of them have of course header names that can be analysed. For example, we see that a typical size of an CSV-file on data.gov.uk has eight columns.
+After much experimentation we managed to automatically read 7,390 CSV-files. All of them have, of course, header names that can be analysed. For example, we see that a typical CSV-file on data.gov.uk has eight columns.
 
 ![header-length](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/header-length-histogram.png)
 

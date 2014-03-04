@@ -184,9 +184,12 @@ write.csv(header.table, "header-counts-clean.csv")
 summary(sapply(header.names, length))
 header.length <- sapply(header.names, length)
 
-ggplot(as.data.frame(header.length), aes(x = header.length)) + geom_histogram(binwidth = 0.05, color = "white", fill = odi_turquoise) + 
-  scale_x_log10() + geom_text(data = as.data.frame(mode.stat(header.length)), x = 0.5, y = 1250, label = "Mode = 8")
-ggsave("graphics/header-length-histogram.png", height = 2, width = 8, dpi = 100)
+ggplot(as.data.frame(header.length), aes(x = header.length)) + 
+  geom_histogram(binwidth = 1, color = "white", fill = odi_turquoise) + coord_cartesian(xlim = c(0, 100)) +
+  geom_text(data = as.data.frame(mode.stat(header.length)), x = 20, y = 1350, label = "Mode = 8") +
+  xlab("Number of columns") +
+  theme(axis.text = element_text(size = 14), axis.title = element_text(size = 14))
+ggsave("graphics/header-length-histogram.png", height = 3, width = 8, dpi = 100)
 
 
 #----------------------------
