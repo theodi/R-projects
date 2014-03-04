@@ -3,7 +3,9 @@
 
 ## Abstract
 
-CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. Our analysis of the headers of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spent records, usually split by month and type. Other departments such as the Crown Prosecution Service also releases vast amounts of CSVs.
+CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. A typical CSV is between 1kb - 1mb in size and has around eight columns.
+
+Our analysis of the header names of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spend records, usually split by month and type. Other organisations such as the Crown Prosecution Service also release vast amounts of CSVs.
 
 
 
@@ -52,12 +54,12 @@ There are some limitations. For instance, it is hard to replicate the exact numb
 
 What is going on? One simple explanation is that data.gov.uk combines many different publishers. All  of them have their own quality and update schedule. In fact, we suspect most of them have not implemented an automated process that would make publication of CSVs easier and more reliable. 
 
-We can summarise the problems by recognising the source of many CSV files: **often a direct copy of an Excel sheet**. Excel sheets are optimised to be read by humans. They usually provide rich metadata, related information, and nice formatting. However, Excel files are difficult to process because each one might be unique. Therefore, saving a `xlsx` file with a `csv` extension, as we observe, cannot be the solution. It is, in fact, the reason for many of the issues we encountered. 
+We can summarise the problems by recognising the source of many CSV files: **often a direct copy of an Excel sheet** (or, in rare cases, an alternative tool). Excel sheets are optimised to be read by humans. They usually provide rich metadata, related information, and nice formatting. However, Excel files are difficult to process because they are unpredictable and possibly unique. Therefore, saving a `xlsx` file with a `csv` extension, as we observe, cannot be the solution. It is, in fact, the reason for many of the issues we encountered. 
 
 There are numerous problems that prohibit importing, or even reading, a CSV file with a machine. 
 
 1. Not available, for example because the link changed or the website is down.
-2. Errors that can be circumvented such as SSL certificate warnings.
+2. Errors that may be circumvented such as SSL certificate warnings.
 3. Non-standard symbols that are not recognised. For example, an `invalid multibyte string` or erroneous line ending.
 4. Files where the header row is not in line 1 or not specified. More in the next section.
 5. Multiple header rows
@@ -99,7 +101,9 @@ There is also a peculiar spike at 41 headers. Some of them have the data arrange
 ##### Figure 3. Histogram of the number of headers (columns)
 ![header-length](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/header-length-histogram.png)
 
-What are the most popular header names? We had to clean up a lot of the names because in its raw format, you'll get "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we get the following table. They may not be representative overall because only the machine-readable CSVs feature, but show how common certain data types are.
+What are the most popular header names? We had to clean up a lot of the names because in its raw format, you will find *messy data* such as "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we produced the following rank table. The headers may not be representative overall because it only features the machine-readable CSVs. 
+
+, but show how common certain data types are
 
 <table class="table offers table-horizontally-condensed">
  <tr><td>Expense Type</td><td>3,144</td></tr>
@@ -126,8 +130,13 @@ The most common cluster is around *Expense Type* because many files document gov
 
 We also see an independent cluster around prosecutions. For example, the Crown Prosecution Service releases a lot of individual CSVs, which increases how many times they appear in our header analysis. 
 
-## Further research
+## Concluding remarks
 
+We appreciate that more and more people recognise CSV as a desirable format of sharing data on the web. However, publishing any tabular data simply with a `.csv` extension will not bring as much further. The key is to follow a minimal standard. This will make a CSV machine-readable and easier to understand. As Jeni wrote, 2014 may turn out to be the [Year of the CSV](http://theodi.org/blog/2014-the-year-of-csv).
+
+Our analysis is far from exhaustive relative to the open data ecosystem; it only looks at data.gov.uk. Even there we have to acknowledge certain limitations such as incorrect headers or temporarily unavailable URLs. What it shows us, however, is that few publishers follow leading practice yet. 
+
+By making access and aggregation of data via CSV easier, we enable a huge potential. For example, only a automated analysis may be able to look at the spending across all government departments and bring the often proclaimed transparency. Companies may use CSVs to integrate them into their dashboards or to build  services. Even non-technical citizens may be able to use the data more easily. Many user-friendly tools such as [Datawrapper](http://datawrapper.de/) have CSV features built-in. Let's aim for a world with less [data munging](http://en.wikipedia.org/wiki/Data_wrangling).
 
 
 
