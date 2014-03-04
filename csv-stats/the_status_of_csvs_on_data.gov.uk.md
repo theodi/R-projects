@@ -45,7 +45,7 @@ Figure 1 shows how the overall number of 20,692 dwindles to 7390:
    ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/miss-header-example.png)
 
 
-As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
+There are some limitations. For instance, it is hard to replicate the exact numbers as website may be offline temporarily. We verified "machine-readable" (and excluded ones) in several ways, but it is likely that we still have false positives and vice versa. As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
 
 
 ## A CSV is not an Excel sheet with a different extension
@@ -65,10 +65,9 @@ There are numerous problems that prohibit importing, or even reading, a CSV file
 7. And many more.
 
 
-
 ## Size 
 
-The vast majority of CSV files is between 1 kb and 1 mb in size. 
+The vast majority of CSV files is between 1kb and 1mb in size. The largest file on data.gov.uk is at the moment the complete data of the Land Registry Price Paid Data with 3.2gb. 
 
 ##### Figure 2. Histogram of the size of CSVs
 ![size-histogram](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/histogram-size-of-csvs.png)
@@ -76,7 +75,7 @@ The vast majority of CSV files is between 1 kb and 1 mb in size.
 
 ## Automatically recognising a header row
 
-A header row in a CSV includes short descriptive names of the data underneath. The header is paramount to get a minimal understanding of the data. Unfortunately, if the header is not in line 1, the machine has to guess where else it might be. This may be a simple task if the first few rows are empty. In many cases, however, the first few lines contain metadata such as the title or the source.
+A header row in a CSV includes short descriptive names of the data underneath. The header is paramount to get a minimal understanding of the data. Unfortunately, if the header is not in line 1, the machine has to guess where else it might be. This may be a simple task if the first few rows are empty. In many cases, however, the first few lines contain metadata such as the title or the source. Some otherwise genuine CSVs have multiple headers.
 
 The following steps create an algorithm that has a good chance of recognising the header row:
 
@@ -86,7 +85,9 @@ The following steps create an algorithm that has a good chance of recognising th
 1. If the test fails, discard `firstrow` and go to step 2.
 1. If the test passes, use `firstrow` as header row. 
 
-Moreover, it is a good idea to check whether the CSV contains more than one table.
+A more sophisticated algorithm would inspect the last header. If its length is very long (we set it at > 100 characters) it is likely to be mistaken as a CSV. To recognise a case of multiple header rows, it may be promising to count the number of missing header names.
+
+Moreover, it is a good idea to check whether the CSV contains more than one table for example by look for a repeated header row.
 
 
 ## Headers and schemas
