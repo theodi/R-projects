@@ -57,11 +57,12 @@ We can summarise the problems by recognising the source of many CSV files: **oft
 There are numerous problems that prohibit importing, or even reading, a CSV file with a machine. 
 
 1. Not available, for example because the link changed or the website is down.
-2. Errors that can be circumvented such as SSL certificate warnings
+2. Errors that can be circumvented such as SSL certificate warnings.
 3. Non-standard symbols that are not recognised. For example, an `invalid multibyte string` or erroneous line ending.
 4. Files where the header row is not in line 1 or not specified. More in the next section.
-5. Multiple tables in one file
-6. And many more.
+5. Multiple header rows
+6. Multiple tables in one file
+7. And many more.
 
 
 
@@ -90,8 +91,11 @@ Moreover, it is a good idea to check whether the CSV contains more than one tabl
 
 ## Headers and schemas
 
-After much experimentation we managed to automatically read 7,390 CSV-files. All of them have, of course, header names that can be analysed. For example, we see that a typical CSV-file on data.gov.uk has eight columns.
+After much experimentation we managed to import 7,390 CSV-files. All of them have header names, of course, that can be analysed. For example, we see that a typical CSV-file on data.gov.uk has eight headers.
 
+There is also a peculiar spike at 41 headers. Some of them have the data arranged in only one row and with many different columns. The prevalent theme are various ways of counting payroll staff.
+
+##### Figure 3. Histogram of the number of headers (columns)
 ![header-length](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/header-length-histogram.png)
 
 What are the most popular header names? We had to clean up a lot of the names because in its raw format, you'll get "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we get the following table. They may not be representative overall because only the machine-readable CSVs feature, but show how common certain data types are.
