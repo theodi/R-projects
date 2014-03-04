@@ -104,8 +104,6 @@ There is also a peculiar spike at 41 headers per dataset. Some of the datasets h
 
 What are the most popular header names? We had to clean up plenty of names because in its raw format, it is *messy data* such as "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we produced the following rank table. 
 
-The headers may not be representative overall because it only features the machine-readable CSVs. They are frequency counts which also implies that departments that release similar data in individual CSVs (e.g. for each month) are overrepresented. Be that as it may, the header ranking shows how common certain data types are.
-
 <table class="table offers table-horizontally-condensed">
  <tr><td>Expense Type</td><td>3,144</td></tr>
  <tr><td>Entity</td><td>3,039</td></tr>
@@ -119,6 +117,7 @@ The headers may not be representative overall because it only features the machi
  <tr><td>Convictions Percentage</td><td>836</td></tr>
 </table>
 
+The headers may not be representative overall because it only features the machine-readable CSVs. They are frequency counts which also implies that departments that release similar data in individual CSVs (e.g. for each month) are overrepresented. Be that as it may, the header ranking shows how common certain data types are.
 
 ##### Figure 4. Co-occurrence of header names
 ![header-map](https://raw.github.com/theodi/R-projects/master/csv-stats/co-occurrence/top-headers-coocc.png)
