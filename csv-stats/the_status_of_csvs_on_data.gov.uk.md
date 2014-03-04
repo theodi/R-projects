@@ -130,7 +130,7 @@ We also see an independent cluster around prosecutions. For example, the Crown P
 
 ## Concluding remarks
 
-We appreciate that more and more people recognise CSV as a desirable format of sharing data on the web. However, publishing any tabular data simply with a `.csv` extension will not bring as much further. The key is to follow a minimal standard. This will make a CSV machine-readable and easier to understand. As Jeni wrote, 2014 may turn out to be the [Year of the CSV](http://theodi.org/blog/2014-the-year-of-csv).
+We appreciate that more and more people recognise CSV as a desirable format for sharing data on the web. However, publishing any tabular data simply with a `.csv` extension will not bring as much further. The key is to follow a minimal standard. This will make a CSV machine-readable and easier to understand. As Jeni wrote, 2014 may turn out to be the [Year of the CSV](http://theodi.org/blog/2014-the-year-of-csv).
 
 Our analysis is far from exhaustive relative to the open data ecosystem; it only looks at data.gov.uk. Even there we have to acknowledge certain limitations such as incorrect headers or temporarily unavailable URLs. What it shows us, however, is that few publishers follow leading practice yet. 
 
