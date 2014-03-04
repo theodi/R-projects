@@ -37,6 +37,9 @@ ggplot(data = gov.csv, aes(x = size/1000)) + geom_histogram(fill = odi_turquoise
   theme(axis.title.x = element_text(hjust = 0.4), axis.text = element_text(size=14), axis.title = element_text(size=14))
 ggsave(file="graphics/histogram-size-of-csvs.png", height = 2, width = 8, dpi = 100)
 
+# Size ranking
+head(na.omit(gov.csv$size[order(-rank(gov.csv$size))]), n = 20)
+
 # Test whether URL exists
 pb <- txtProgressBar(min = 1, max = nrow(gov.csv), style = 3)
 for (i in 1:nrow(gov.csv)) {
