@@ -3,9 +3,9 @@
 
 ## Abstract
 
-CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. A typical CSV is between 1kb - 1mb in size and has around eight columns.
+CSV stands for *comma-separated values*. It is a simple format for tabular data and relatively easy to process. We analysed more than 20,000 links to CSV files on data.gov.uk – only around one third turned out to be machine-readable. Around 4,000 were other formats, another 4,000 are no longer available and the rest did not conform to a minimal standard such as a header row in the first line. A typical CSV is between 1kb-1mb in size and has around eight columns.
 
-Our analysis of the header names of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spend records, usually split by month and type. Other organisations such as the Crown Prosecution Service also release vast amounts of CSVs.
+Our analysis of the header names of 7390 machine-readable CSVs suggests that there are clear patterns. The most common type are spend records, usually split by month and type. Other organisations such as the Crown Prosecution Service also release vast amounts of CSVs. If publishers embrace standards for CSV data releases, we see a great potential such as aggregate analyses.
 
 
 
@@ -49,6 +49,7 @@ Figure 1 shows how the overall number of 20,692 dwindles to 7390:
 
 There are some limitations. For instance, it is hard to replicate the exact numbers as a website may be temporarily offline. We verified "machine-readable" (and excluded ones) in several ways, but it is likely that we still have false positives and vice versa. As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
 
+The whole analysis and its code is on [GitHub](https://github.com/theodi/R-projects/blob/master/csv-stats/csv-meta-analysis-data-gov.R).
 
 ## A CSV is not an Excel sheet with a different extension
 
@@ -94,16 +95,16 @@ Moreover, it is a good idea to check whether the CSV contains more than one tabl
 
 ## Headers and schemas
 
-After much experimentation we managed to import 7,390 CSV-files. All of them have header names, of course, that can be analysed. For example, we see that a typical CSV-file on data.gov.uk has eight headers.
+After much experimentation we managed to automatically read 7,390 CSV-files. All of them have header names, of course, that can be analysed. For example, a typical CSV file on data.gov.uk has eight headers (see figure 3).
 
-There is also a peculiar spike at 41 headers. Some of them have the data arranged in only one row and with many different columns. The prevalent theme are various ways of counting payroll staff.
+There is also a peculiar spike at 41 headers per dataset. Some of the datasets have all the information arranged in only one row with many different columns. The prevalent theme, in this case it seems, are various ways of counting payroll staff.
 
 ##### Figure 3. Histogram of the number of headers (columns)
 ![header-length](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/header-length-histogram.png)
 
-What are the most popular header names? We had to clean up a lot of the names because in its raw format, you will find *messy data* such as "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we produced the following rank table. The headers may not be representative overall because it only features the machine-readable CSVs. 
+What are the most popular header names? We had to clean up plenty of names because in its raw format, it is *messy data* such as "amount", " amount", "AMUONT" etc. After some [Open Refine](http://openrefine.org) magic, we produced the following rank table. 
 
-, but show how common certain data types are
+The headers may not be representative overall because it only features the machine-readable CSVs. They are frequency counts which also implies that departments that release similar data in individual CSVs (e.g. for each month) are overrepresented. Be that as it may, the header ranking shows how common certain data types are.
 
 <table class="table offers table-horizontally-condensed">
  <tr><td>Expense Type</td><td>3,144</td></tr>
@@ -117,8 +118,6 @@ What are the most popular header names? We had to clean up a lot of the names be
  <tr><td>VAT Registration Number</td><td>916</td></tr>
  <tr><td>Convictions Percentage</td><td>836</td></tr>
 </table>
-
-The whole analysis is of course on [GitHub](https://github.com/theodi/R-projects/blob/master/csv-stats/csv-meta-analysis-data-gov.R).
 
 
 ##### Figure 4. Co-occurrence of header names
