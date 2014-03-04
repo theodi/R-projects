@@ -47,7 +47,7 @@ Figure 1 shows how the overall number of 20,692 dwindles to 7390:
    ![example](https://raw.github.com/theodi/R-projects/master/csv-stats/graphics/miss-header-example.png)
 
 
-There are some limitations. For instance, it is hard to replicate the exact numbers as website may be offline temporarily. We verified "machine-readable" (and excluded ones) in several ways, but it is likely that we still have false positives and vice versa. As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
+There are some limitations. For instance, it is hard to replicate the exact numbers as a website may be temporarily offline. We verified "machine-readable" (and excluded ones) in several ways, but it is likely that we still have false positives and vice versa. As a side note, of all the CSVs listed on data.gov.uk, 3169 (19%) are served over a secure connection, i.e. `https`.
 
 
 ## A CSV is not an Excel sheet with a different extension
@@ -87,9 +87,9 @@ The following steps create an algorithm that has a good chance of recognising th
 1. If the test fails, discard `firstrow` and go to step 2.
 1. If the test passes, use `firstrow` as header row. 
 
-A more sophisticated algorithm would inspect the last header. If its length is very long (we set it at > 100 characters) it is likely to be mistaken as a CSV. To recognise a case of multiple header rows, it may be promising to count the number of missing header names.
+A more sophisticated algorithm would inspect the last header. If its length is very long (we set it at > 100 characters) it is likely to be something else mistaken as a CSV. To recognise a case of multiple header rows, it may be promising to count the number of missing header names.
 
-Moreover, it is a good idea to check whether the CSV contains more than one table for example by look for a repeated header row.
+Moreover, it is a good idea to check whether the CSV contains more than one table, for example by looking for a repeated header row.
 
 
 ## Headers and schemas
