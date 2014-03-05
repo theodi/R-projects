@@ -11,8 +11,9 @@ Our analysis of the header names of 7,390 machine-readable CSVs suggests that th
 
 ## Metadata
 
-In January 2014 we created a file that contains all CSVs published on [data.gov.uk](http://data.gov.uk). [STUART TO ADD A SENTENCE ON HOW] The result is a simple file that mainly lists all the URLs on data.gov.uk that are classified as data in a CSV format. 
+In January 2014 we created a file that contains all CSVs published on [data.gov.uk](http://data.gov.uk) by searching for all CSVs and then grabbing [the accompanying Atom feed](http://data.gov.uk/feeds/custom.atom?res_format=CSV), we then looped through all the results, and dumped the data we needed into a CSV file (the [Ruby code](https://github.com/theodi/csv_finder) and [resulting CSV](http://theodi.github.io/csv_finder/csv_urls.csv) is on Github).
 
+The result is a simple file that mainly lists all the URLs on data.gov.uk that are classified as data in a CSV format. 
  
 <table class="table offers table-horizontally-condensed">
   <tr>
