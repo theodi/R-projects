@@ -129,7 +129,7 @@ The most common cluster is around *Expense Type* because many files document gov
 
 We also see an independent cluster around prosecutions. For example, the Crown Prosecution Service releases a lot of individual CSVs, which increases how many times they appear in our header analysis. 
 
-##### Figure 5. Co-occurrence of header names excluding common datsets
+##### Figure 5. Co-occurrence of header names excluding popular datasets
 ![header-map2](https://raw.github.com/theodi/R-projects/master/csv-stats/co-occurrence/top-headers-coocc-excl-popular.png)
 
 
