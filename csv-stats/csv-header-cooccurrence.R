@@ -20,7 +20,6 @@ write.csv(coocc, "co-occurrence/csv-coocc-out.csv")
 # Clean LOADS of headers
 # Re-import
 coocc.clean <- read.csv("co-occurrence/csv-coocc-clean.csv", stringsAsFactors = FALSE)
-
 # Remove duplicates
 coocc.clean <- unique(coocc.clean)
 
@@ -55,7 +54,7 @@ write.graph(g, file = "co-occurrence/header-coocc.graphml", format = "graphml")
 
 #-----------------------
 # Headers without three types of dataset approx. by main variable
-exclude <- c("Expense Type", "Convictions Percentage", "Reports to Senior Post")
+exclude <- c("Expense Type", "Expenses Type", "Convictions Percentage", "Reports to Senior Post", "Post Unique Reference")
 
 coocc.clean <- as.data.table(coocc.clean)
 setkey(coocc.clean, dataset)
@@ -71,9 +70,15 @@ header.table.ex <- sort(table(coocc.clean.ex$header), decreasing = TRUE)
 
 # There are headers which were empty fields b/c of inaccuracies, rm via grep (e.g., V4, V27)
 header.table.ex <- header.table.ex[-(grep("V[0-9]{1,2}", names(header.table.ex)))]
+header.table.ex <- header.table.ex[-grep("<html>", names(header.table.ex))] # Drop <html> artefact
 
-top.headers.ex <- names(header.table.ex[1:201])
-top.headers.ex <- top.headers.ex[-grep("<html>", names(header.table.ex))] # Drop <html> artefact
+# Some other artefacts that shoud've been removed earlier
+header.table.ex <- header.table.ex[-grep("The resource you are looking for has been removed", names(header.table.ex))]
+header.table.ex <- header.table.ex[-grep(" had its name changed", names(header.table.ex))]
+header.table.ex <- header.table.ex[-grep(" or is temporarily unavailable.", names(header.table.ex))]
+
+top.headers.ex <- names(header.table.ex[1:200])
+top.headers.ex
 coocc.clean.top.ex <- coocc.clean.ex[which(coocc.clean.ex$header %in% top.headers.ex), ]
 
 coocc.molt.ex <- melt(coocc.clean.top.ex)
@@ -95,6 +100,8 @@ write.csv(gephi, "co-occurrence/header-coocc-excl-popular.csv")
 g <- graph.adjacency(v, weighted = TRUE, mode = 'undirected')
 g <- simplify(g)
 plot(g)
+# Experimental 3D
+# rglplot(g, vertex.color= odi_turquoise, vertex.size = 3)
 
 # Write to a GraphML file
 write.graph(g, file = "co-occurrence/header-coocc-excl-popular.graphml", format = "graphml")
