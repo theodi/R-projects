@@ -107,4 +107,20 @@ plot(g)
 write.graph(g, file = "co-occurrence/header-coocc-excl-popular.graphml", format = "graphml")
 
 
+# Having a look at some particular datasets
+gov.csv.machine[6780]
+gov.csv.machine$description[coocc.clean.ex$dataset[grep("Notarial Acts", coocc.clean.ex$header)]]
+# Foreign Office Consular
+# http://data.gov.uk/dataset/foreign-office-consular-data 
+# 38 months
+
+# Metoffice Latest 24 hours observational data - Marine
+# http://data.gov.uk/dataset/latest-marine-observational-data
+# 46 regions
+gov.csv.machine[367]
+coocc.clean.ex$dataset[grep("humidity", coocc.clean.ex$header)]
+
+# Workforce Management Information - BIS
+coocc.clean.ex$dataset[grep("payroll", coocc.clean.ex$header)]
+
 
