@@ -132,6 +132,17 @@ We also see an independent cluster around prosecutions. For example, the Crown P
 ##### Figure 5. Co-occurrence of header names excluding popular datasets
 ![header-map2](https://raw.github.com/theodi/R-projects/master/csv-stats/co-occurrence/top-headers-coocc-excl-popular.png)
 
+Figure 5 shows the co-occurrence of headers excluding popular datasets. For example, CSVs with *Expense Type* no longer appear. Here the 200 most popular header names reveal quite a tangle. The large, overplotted area on the bottom are CSV headers, among others, from the BIS Workforce Management Information.
+
+The big cluster on the right, dubbed the "Death Star", comes from one series of CSVs. The [Foreign Office Consular](http://data.gov.uk/dataset/foreign-office-consular-data) publishes "data on assistance provided to British nationals worldwide this includes numbers of incidents handled by UK consulates overseas, including hospitalisations, deaths, detentions, with geographical location". 
+
+A similar cluster appears on the top left published by the [Metoffice](http://data.gov.uk/dataset/latest-marine-observational-data). It includes the latest 24 hours marine data for observed weather. Both exemplify why some headers are more related than others: a publisher may release many almost identical files split by time or geography.
+
+
+
+
+
+
 
 ## Concluding remarks
 
