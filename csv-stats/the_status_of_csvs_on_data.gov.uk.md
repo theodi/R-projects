@@ -79,7 +79,7 @@ The vast majority of CSV files is between 1kb and 1mb in size. The largest file 
 
 ## Automatically recognising a header row
 
-A header row in a CSV includes short descriptive names of the data underneath. The header is paramount to get a minimal understanding of the data. Unfortunately, if the header is not in line 1, the machine has to guess where else it might be. This may be a simple task if the first few rows are empty. In many cases, however, the first few lines contain metadata such as the title or the source. Some otherwise genuine CSVs have multiple headers.
+A header row in a CSV includes short descriptive names of the data underneath. The header is paramount to get a minimal understanding of the data. Unfortunately, if the header is not in line 1, the machine has to guess where else it might be. This may be a simple task if the first few rows are empty. In many cases, however, the first few lines contain metadata such as the title or the source. Some otherwise genuine CSVs have multiple headers. In our analysis we only analysed those files that are already machine-readable. 
 
 The following steps create an algorithm that has a good chance of recognising the header row:
 
@@ -94,9 +94,9 @@ A more sophisticated algorithm would inspect the last header. If its length is v
 Moreover, it is a good idea to check whether the CSV contains more than one table, for example by looking for a repeated header row.
 
 
-## Headers and schemas
+## Header names
 
-After much experimentation we managed to automatically read 7,390 CSV-files. All of them have header names, of course, that can be analysed. For example, a typical CSV file on data.gov.uk has eight headers (see figure 3).
+After much experimentation we automatically read 7,390 CSV-files. All of them have header names, of course, that can be analysed. For example, a typical CSV file on data.gov.uk has eight headers, i.e. columns (see figure 3).
 
 There is also a peculiar spike at 41 headers per dataset. Some of the datasets have all the information arranged in only one row with many different columns. The prevalent theme, in this case it seems, are various ways of counting payroll staff.
 
