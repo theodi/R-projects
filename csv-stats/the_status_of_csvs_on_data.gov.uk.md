@@ -150,7 +150,7 @@ We appreciate that more and more people recognise CSV as a desirable format for 
 
 Our analysis is far from exhaustive relative to the open data ecosystem; it only looks at data.gov.uk. Even there we have to acknowledge certain limitations such as incorrect headers or temporarily unavailable URLs. What it shows us, however, is that few publishers follow leading practice yet. 
 
-By making access and aggregation of data via CSV easier, we enable a huge potential. For example, only a automated analysis may be able to look at the spending across all government departments and bring the often proclaimed transparency. Companies may use CSVs to integrate them into their dashboards or to build  services. Even non-technical citizens may be able to use the data more easily. Many user-friendly tools such as [Datawrapper](http://datawrapper.de/) have CSV features built-in. Let's aim for a world with less [data munging](http://en.wikipedia.org/wiki/Data_wrangling).
+By making access and aggregation of data via CSV easier, we enable a huge potential. For example, only an automated analysis may be able to look at the spending across all government departments and bring the often proclaimed transparency. Companies may use CSVs to integrate them into their dashboards or to build  services. Even non-technical citizens may be able to use the data more easily. Many user-friendly tools such as [Datawrapper](http://datawrapper.de/) have CSV features built-in. Let's aim for a world with less [data munging](http://en.wikipedia.org/wiki/Data_wrangling).
 
 
 
