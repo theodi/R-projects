@@ -26,3 +26,10 @@ pct.unique <- function(x) as.numeric(formatC(length(unique(x)) * 100 / length(x)
 
 # Show missing data in table as default
 table = function (..., useNA = 'ifany') base::table(..., useNA = useNA)
+
+read.ssl <- function(url, ...){
+  tmpFile <- tempfile()
+  download.file(url, destfile = tmpFile, method = "curl")
+  url.data <- read.csv(tmpFile, ...)
+  return(url.data)
+}
