@@ -1,0 +1,113 @@
+What's this data called?
+Where is it described?
+Do you have the rights to publish this data as open data?
+Is there a link to your data from your main website?
+Where is your dataset?
+Does your data documentation include machine-readable data for:
+Which page on your website links to the data?
+Who publishes this data?
+Where do you detail the risks people might encounter if they use this data?
+Is your data listed within a collection?
+How do you publish a series of the same dataset?
+What website is the data published on?
+What kind of release is this?
+Was <em>all</em> this data originally created or gathered by you?
+Where is it listed?
+Was some of this data extracted or calculated from other data?
+Is this data referenced from your own publications?
+Are <em>all</em> sources of this data already published as open data?
+Where is your data referenced?
+Where is your current dataset?
+What format do dataset release URLs follow?
+Was some of this data crowdsourced?
+Does the data behind your API change?
+Where is your list of dataset releases?
+Will your data go out of date?
+Where is the endpoint for your API?
+Did contributors to this data use their judgement?
+Where is the Contributor Licence Agreement (CLA)?
+Have all contributors agreed to the Contributor Licence Agreement (CLA)?
+Does this data change at least daily?
+How do you publish database dumps?
+Does your documentation include machine-readable metadata for each distribution on:
+What type of dataset series is this?
+Where do you describe sources of this data?
+Is a feed of changes available?
+Is documentation about the sources of this data also in machine-readable format?
+How often do you create a new release?
+Where is the current database dump?
+What format do database dump URLs follow?
+Where is your list of available database dumps?
+Where is the technical documentation for the data?
+Where have you published the rights statement for this dataset?
+Where is your feed of changes?
+How long is the delay between when you create a dataset and when you publish it it?
+Do the data formats use vocabularies or schemas?
+Under which licence can people reuse this data?
+Is this data machine-readable?
+Where is documentation about your data vocabularies?
+Why doesn't a licence apply to this data?
+Which waiver do you use to waive rights in the data?
+Is this data in a standard open format?
+Are there any codes used in this data?
+Where is the waiver for the rights in the data?
+Do you also publish dumps of this dataset?
+Where are any codes in your data documented?
+What is the name of the licence?
+What kind of data do you publish?
+Where is the licence?
+How frequently do you create a new database dump?
+Do your human-readable documents include formats that
+Is the licence an open licence?
+Where can people find out how to contact someone with questions about this data?
+Is there any copyright in the content of this data?
+Does your statistical data include formats that
+Where can people find out how to improve the way your data is published?
+Is the content of the data marked as public domain?
+Will your data be corrected if it has errors?
+Where can people find out how to contact someone with questions about privacy?
+Under which licence can others reuse content?
+Why doesn't a licence apply to the content of the data?
+Where do you document issues with the quality of this data?
+Does your geographic data include formats that
+Do you use social media to connect with people who use your data?
+Which waiver do you use to waive copyright?
+Where is the waiver for the copyright?
+Where is your quality control process described?
+Which social media accounts can people reach you on?
+What's the name of the licence?
+Does your structured data include formats that
+Where should people discuss this dataset?
+Where is the licence?
+Is the licence an open licence?
+Do you take offsite backups?
+Does your data use persistent identifiers?
+Where can people find out how to request corrections to your data?
+Where are the rights and licensing of the content explained?
+Where do you describe any guarantees about service availability?
+Can the identifiers in your data be used to find extra information?
+Where can people find out how to get notifications of corrections to your data?
+Does your rights statement include machine-readable versions of
+Where do you give information about the current status of the service?
+Do you have anyone who actively builds a community around this data?
+Where is the service that is used to resolve the identifiers?
+How long will this data be available for?
+Where is their home page?
+Is there third-party information about things in your data on the web?
+Is that third-party information reliable?
+Where do you list tools to work with your data?
+Does your data use those third-party URLs?
+Do you provide machine-readable provenance for your data?
+Can individuals be identified from this data?
+Where do you describe how people can verify that data they receive comes from you?
+Has your anonymisation process been independently audited?
+Have you attempted to reduce or remove the possibility of individuals being identified?
+Are you required or permitted by law to publish this data about individuals?
+Where do you document your right to publish data about individuals?
+Have you carried out a Privacy Impact Assessment?
+Where is your Privacy Impact Assessment published?
+Has your Privacy Impact Assessment been independently audited?
+Where is the privacy notice for individuals affected by your data?
+Is there someone in your organisation who is responsible for data protection?
+Have you involved them in the Privacy Impact Assessment process?
+Has your anonymisation approach been independently audited?
