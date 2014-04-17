@@ -17,3 +17,5 @@ responses <- as.vector((responses))
 
 #Test write to text file
 writeLines(questions, 'cert-questions.txt')
+
+View(responses[1:5])
